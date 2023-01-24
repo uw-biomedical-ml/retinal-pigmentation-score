@@ -50,7 +50,7 @@ The output will have multiple directories:
 
   `git clone https://github.com/arajesh17/retinal-pigmentation-score.git`
 
-1. Pull the docker container and start it.
+2. Pull the docker container and start it.
 
     The docker container is stored here: https://hub.docker.com/r/arajesh17/rps
 
@@ -62,11 +62,11 @@ The output will have multiple directories:
     
       `docker run -it -v <your images path:/home/images/> -v <your results path>:/home/results/ -v <your rps repo path>:/home/retinal-pigmentation-score/ --gpus all arajesh17/rps /bin/bash`
 
-2. Activate the python environment in the docker container
+3. Activate the python environment in the docker container
 
     `conda activate automorph`
 
-3. Run the main.py
+4. Run the main.py
 
     `python /home/retinal-pigementation-score/src/main.py`
 
