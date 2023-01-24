@@ -1,4 +1,5 @@
 import matplotlib.image as mpimage
+import matplotlib.pyplot as plt
 from PIL import Image
 from scipy.ndimage import binary_dilation, center_of_mass, generate_binary_structure 
 from skimage.color import rgb2gray, rgb2lab
@@ -6,6 +7,7 @@ from skimage.morphology import flood
 import numpy as np
 import pandas as pd
 from glob import glob
+import os
 
 
 def remove_dc_island(im):
@@ -113,17 +115,29 @@ def get_pigmentation(config):
         im_pth = row.Name
         f = im_pth.split('/')[-1]
 
-        im = mpimage.imread(im_pth)
+        im = Image.open(im_pth)
         im = crop_img(row.centre_w, row.centre_h, row.radius, im)
         masks = get_masks(vp+f, dp+f)
-        inv_mask = get_inverted_masks(masks, im)
+        inv_mask = get_inverted_masks(masks, np.array(im))
     
-        vals = rgb2lab(im[inv_mask])
+        vals = rgb2lab(np.array(im)[inv_mask])
         med  = np.median(vals, axis=0)
         f_list.append(im_pth)
         L.append(med[0])
         a.append(med[1])
         b.append(med[2])
+
+        if config.debug == True:
+            
+            if not os.path.exists(config.results_dir + 'debug/'):
+                os.makedirs(config.results_dir + "debug/")
+            
+            fig = plt.figure(figsize=(10,10))
+            plt.imshow(np.array(im))
+            plt.imshow(inv_mask, alpha =0.14)
+            plt.title("file:{}".format(f))
+            plt.axis('off')
+            plt.savefig(config.results_dir+'debug/{}_debug.png'.format(f))
 
     data = {'Name': f_list, 'L': L, 'a': a, 'b':b}
     df = pd.DataFrame.from_dict(data)
