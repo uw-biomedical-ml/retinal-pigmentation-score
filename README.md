@@ -69,6 +69,10 @@ The output will have multiple directories:
 4. Run the main.py
 
     `python /home/retinal-pigementation-score/src/main.py`
+    
+5. Figure out optimal worker number and batch_size
+
+  Run main.py() and also `nvidia-smi` in another window on the same machine to look at GPU memory usage while executing the code. If you are not using all of your card's memory, increase the batch size until you are using nearly all of this. Batch size can be modified in the `src/config.py` file of this repo.
 
 
 ### To-Do
