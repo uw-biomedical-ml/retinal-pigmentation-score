@@ -22,17 +22,17 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
 
 # Execution instructions
 
-docker pull arajesh/rps
+`docker pull arajesh/rps`
 
-docker exec -it -v <mount file system> --gpus all arajesh/rps /bin/bash
+`docker exec -it -v <mount file system> --gpus all arajesh/rps /bin/bash`
 
 *within the docker container*
   
-<conda activate automorph>
+`conda activate automorph`
   
 *change the config.py to have variables relevant to you*
 
-python main.py
+`python main.py`
 
 
 ### To-Do
