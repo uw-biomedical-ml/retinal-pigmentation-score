@@ -14,19 +14,19 @@ print('config values', 'ukb', config.ukb, 'sparse', config.sparse)
    
 if __name__ == "__main__":
 
-#    print("Running EyeQ process")
-#    # preprocessing
-#    M0_EQ.EyeQ_process(config)
-#
-#    # Eye Quality deep learning assesment
-#    print("Running Image quality assesment")
-#    M1_EP.M1_image_quality(config)
-#    M1_QA.quality_assessment(config)
-#
-#    # deep learning disc and vessel segmentation
-#    M2_VS.M2_vessel_seg(config)
-#    M2_AV.M2_artery_vein(config)
-#    M2_DC.M2_disc_cup(config)
+    print("Running EyeQ process")
+    # preprocessing
+    M0_EQ.EyeQ_process(config)
+
+    # Eye Quality deep learning assesment
+    print("Running Image quality assesment")
+    M1_EP.M1_image_quality(config)
+    M1_QA.quality_assessment(config)
+
+    # deep learning disc and vessel segmentation
+    M2_VS.M2_vessel_seg(config)
+    M2_AV.M2_artery_vein(config)
+    M2_DC.M2_disc_cup(config)
 
     # extract retinal pigmentation score
     print("extracting pigmentation")

@@ -24,7 +24,7 @@ class TrainDataset(Dataset):
         
         self.ids = [splitext(file)[0] for file in listdir(self.im_list)
                     if not file.startswith('.')]
-        logging.info(f'Creating dataset with {(self.ids)} ')
+        #logging.info(f'Creating dataset with {(self.ids)} ')
         logging.info(f'Creating dataset with {len(self.ids)} examples')
         
 
@@ -84,7 +84,7 @@ class TestDataset(Dataset):
         self.crop_csv = crop_csv
         fps = pd.read_csv(crop_csv, usecols=['Name']).values.ravel()
         self.file_paths = fps
-        logging.info(f'Creating dataset with {(self.file_paths)} ')
+        #logging.info(f'Creating dataset with {(self.file_paths)} ')
         logging.info(f'Creating dataset with {len(self.file_paths)} examples')
         
         #self.mask_list = df.mask_paths

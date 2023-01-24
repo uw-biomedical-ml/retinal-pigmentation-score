@@ -63,8 +63,10 @@ def get_inverted_masks(masks, raw_im):
     th = np.percentile(gray_im, 0.5)
     mask[gray_im <= th] = 1 #TODO think of a better thresholding
 
-    # dilate the mask
-    mask = binary_dilation(mask, structure = generate_binary_structure(2,2,), iterations=8) #TODO need to have this size dependent based on img resolution
+    # dilate the mask it will be scaled by every 600 pixels in the image to roughly have the same dilation irrespective of size
+    struct_size = [int(x/600) for x in raw_im.shape]
+    mask = binary_dilation(mask, structure = generate_binary_structure(2,2,),\
+                           iterations=4*struct_size[0]) 
 
     # invert values to create boolean array where searchable areas are equal to 1
     inv_mask = np.array(~(mask).astype('bool'))
@@ -78,7 +80,7 @@ def crop_img(c_w, c_h, r, img):
         c_w (int): center of img to crop along width dimension
         c_h (int): center of img to crop along height dimension
         radius (int): "radius for the crop
-        img (np.array): raw numpy array of image file to crop
+        img (np.array): PIL Image object of image to crop
 
     Returns:
         crop_im: image that has been cropped
@@ -87,7 +89,7 @@ def crop_img(c_w, c_h, r, img):
     w_min, w_max = int(c_w-r), int(c_w+r) 
     h_min, h_max = int(c_h-r), int(c_h+r)
     
-    crop_img = img[w_min:w_max, h_min:h_max]
+    crop_img = img.crop((h_min, w_min, h_max, w_max))
 
     return crop_img
 

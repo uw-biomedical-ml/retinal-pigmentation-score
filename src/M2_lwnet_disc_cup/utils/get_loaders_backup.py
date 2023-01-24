@@ -24,7 +24,7 @@ class TrainDataset(Dataset):
         
         self.ids = [splitext(file)[0] for file in listdir(self.im_list)
                     if not file.startswith('.')]
-        logging.info(f'Creating dataset with {(self.ids)} ')
+        #logging.info(f'Creating dataset with {(self.ids)} ')
         logging.info(f'Creating dataset with {len(self.ids)} examples')
         
 
@@ -88,7 +88,7 @@ class TestDataset(Dataset):
         
         self.ids = [splitext(file)[0] for file in listdir(self.im_list)
                     if not file.startswith('.')]
-        logging.info(f'Creating dataset with {(self.ids)} ')
+        #logging.info(f'Creating dataset with {(self.ids)} ')
         logging.info(f'Creating dataset with {len(self.ids)} examples')
         
         #self.mask_list = df.mask_paths

@@ -134,8 +134,7 @@ def test_net(net_G_1, net_G_A_1, net_G_V_1, net_G_2, net_G_A_2, net_G_V_2,
             mask_pred_tensor_small_all = 0
             imgs = imgs.to(device=device, dtype=torch.float32)
 
-            print('running artery_vein on', img_name)
-            print('')
+            #print('running artery_vein on', img_name)
 
             with torch.no_grad():
 
@@ -250,7 +249,6 @@ def test_net(net_G_1, net_G_A_1, net_G_V_1, net_G_2, net_G_A_2, net_G_V_2,
                 
                 for i in range(n_img):
 
-                    print('predicting on ', img_name[i])
                     
                     if not cfg.ukb:
                         save_image(uncertainty_map[i,...]*255, seg_uncertainty_small_path+img_name[i]+'.png')
