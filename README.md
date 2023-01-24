@@ -19,20 +19,65 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
 }
 ```
 
+# Dataset Format
+
+**Input**
+  
+  All color fundus photos need to be in a single directory and in png format.
+
+**Output**
+
+  All results will be dumped into a folder that you specify: *ie* `/data/arajesh/rps/results`
+
+The output will have multiple directories:
+
+  1. M0: preprocessing outputs
+  
+  2. M1: image quality steps - results will be stored in M1/Good_quality/image_list.csv
+  
+  3a. M2 disc_cup: optic disc and cup segmentation
+  
+  3b. M2 binary_vessel: binary vessel segmentation
+  
+  3c. M2 artery_vein: artery and vein multiclass segmentation
+  
+  *retinal_background_lab_values.csv* : csv file with the median retinal background for each image extracted with retinal pigmentation extraction script
+  
 
 # Execution instructions
 
-docker pull <>
-docker exec -it -v <mount file system> --gpus all /bin/bash
-*within the docker container*
-conda activate automorph
-*change the config.py to have variables relevant to you*
-python main.py()
+1. Clone this code repository:
+
+  `git clone https://github.com/arajesh17/retinal-pigmentation-score.git`
+
+2. Pull the docker container and start it.
+
+    The docker container is stored here: https://hub.docker.com/r/arajesh17/rps
+
+    Please pull the repo 
+    
+      `docker pull arajesh17/rps`
+    
+    Now in your terminal after you finished the pull, you can start the container with an interactive shell
+    
+      `docker run -it -v <your images path:/home/images/> -v <your results path>:/home/results/ -v <your rps repo path>:/home/retinal-pigmentation-score/ --gpus all arajesh17/rps /bin/bash`
+
+3. Activate the python environment in the docker container
+
+    `conda activate automorph`
+
+4. Run the main.py
+
+    `python /home/retinal-pigementation-score/src/main.py`
+    
+5. Figure out optimal worker number and batch_size
+
+  Run main.py() and also `nvidia-smi` in another window on the same machine to look at GPU memory usage while executing the code. If you are not using all of your card's memory, increase the batch size until you are using nearly all of this. Batch size can be modified in the `src/config.py` file of this repo.
 
 
 ### To-Do
 - [X] Modularize Automorph
 - [ ] Figure out minimum docker requirements for automorph
-- [ ] Port the retinal pigmentation extraction code
+- [X] Port the retinal pigmentation extraction code
 - [ ] Reduce the file size specifically removing the extra model state dicts that are stored for the models in automorph
 
