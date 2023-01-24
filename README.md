@@ -32,7 +32,7 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
     
     Now in your terminal after you finished the pull, you can start the container with an interactive shell
     
-      `docker exec -it -v <your images path:/home/images/> -v <your results path>:/home/results/ --gpus all arajesh/rps /bin/bash`
+      `docker run -it -v <your images path:/home/images/> -v <your results path>:/home/results/ -v <your rps repo path>:/home/retinal-pigmentation-score/ --gpus all arajesh17/rps /bin/bash`
 
 2. Activate the python environment in the docker container
 
@@ -40,7 +40,7 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
 
 3. Run the main.py
 
-    `python main.py`
+    `python /home/retinal-pigementation-score/src/main.py`
 
 
 ### To-Do
