@@ -1,0 +1,104 @@
+import matplotlib.image as mpimage
+from scipy.ndimage import binary_dilation, center_of_mass, generate_binary_structure 
+from skimage.color import rgb2gray, rgb2lab
+from skimage.morphology import flood
+import numpy as np
+import pandas as pd
+import os
+
+
+def remove_dc_island(im):
+    """ removes the pixels that are not connected to the disc cup segmentations using flood fill"""
+
+    # finds the segmentation in the blue channel (correlates to the cup)
+    dc = np.zeros(im.shape[:2])
+    dc[np.where(im>0)[:2]] = 1
+    com = center_of_mass(im[:,:,2] == 1)
+    if not np.isnan(com).any(): #TODO could be bug if it doesn't creat the correct min and max
+        seed = tuple(int(x) for x in com)
+        flooded = flood(dc, seed)
+        return flooded
+    else: 
+        return np.sum(im, axis=2) #TODO deal with when there is no disc segmentation
+
+def get_masks(vessel_path, disc_path):
+    """code to generate masks with the paths
+
+    Args:
+        vessel_path (str): path to vessels
+        disc_path (str): path to disc
+
+    Returns:
+        _type_: _description_
+    """
+
+    vessel = mpimage.imread(vessel_path)
+    artery = vessel[:,:,0] #artery in red channel 
+    vein = vessel[:,:,2]  # vein in blue channel
+    uncertain = vessel[:,:,1] # uncertain in green channel
+    dc = mpimage.imread(disc_path)
+    dc = remove_dc_island(dc) 
+
+    masks = [artery, vein, uncertain, dc]
+
+    return masks
+
+def get_inverted_masks(masks, raw_im):
+    """creates the inverted image from an array of the masks and the raw image
+
+    Args:
+        masks (array): list of the mask arrays (artery, vein disc)
+        raw_im (array): array of the raw image 
+
+    Returns:
+        inv_mask (array): array of the backgorund image inverted
+    """
+
+    mask = np.sum(masks, axis=0)
+    mask[mask>0] = 1
+
+    # find the background
+    gray_im = rgb2gray(raw_im)
+    th = np.percentile(gray_im, 0.5)
+    mask[gray_im <= th] = 1 #TODO think of a better thresholding
+
+    # dilate the mask
+    mask = binary_dilation(mask, structure = generate_binary_structure(2,2,), iterations=8) #TODO need to have this size dependent based on img resolution
+
+    # invert values to create boolean array where searchable areas are equal to 1
+    inv_mask = np.array(~(mask).astype('bool'))
+
+    return inv_mask
+
+def get_pigmentation(config):
+    """extracts the median color from the retinal background in the Lab space and
+    stores it as a csv
+    """
+
+    im_dir = config.results_dir+ "M1/Good_quality/"
+    vp = config.results_dir + "binary_vessel/raw_binary/"
+    dp = config.results_dir + "M2/optic_disc_cup/raw/"
+    out_csv = config.results_dir  + 'retinal_background_lab_values.csv'
+
+    f_list = []
+    L = []
+    a = []
+    b = []
+
+    for f in os.listdir(im_dir):
+
+        masks = get_masks(vp+f, dp+f)
+        inv_mask = get_inverted_masks(masks)
+    
+        im = mpimage.imread(im_dir+f)
+        vals = rgb2lab(im[inv_mask])
+        med  = np.median(vals, axis=0)
+        f_list.append(f)
+        L.append(med[0])
+        a.append(med[1])
+        b.append(med[2])
+
+    data = {'f': f_list, 'L': L, 'a': a, 'b':b}
+    df = pd.DataFrame.from_dict(data)
+    print('Lab color values are stored at {}'.format(out_csv))
+    df.to_csv(out_csv, index=False)
