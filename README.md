@@ -32,7 +32,7 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
     
     Now in your terminal after you finished the pull, you can start the container with an interactive shell
     
-       `docker exec -it -v <your images path:/home/images/> -v <your results path>:/home/results/ --gpus all arajesh/rps /bin/bash`
+      `docker exec -it -v <your images path:/home/images/> -v <your results path>:/home/results/ --gpus all arajesh/rps /bin/bash`
 
 2. Activate the python environment in the docker container
 
