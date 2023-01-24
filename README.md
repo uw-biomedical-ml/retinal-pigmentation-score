@@ -21,7 +21,10 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
 
 # Dataset Format
 
-All color fundus photos need to be in a single directory and in png format.
+**Input**
+  All color fundus photos need to be in a single directory and in png format.
+**Output**
+  All results will be dumped into a folder that you specify
 
 The output will have multiple directories:
 
