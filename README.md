@@ -35,7 +35,7 @@ The output will have multiple directories:
   
   3c. M2 artery_vein: artery and vein multiclass segmentation
   
-  retinal_background_lab_values.csv : csv file with the median retinal background for each image extracted with retinal pigmentation extraction script
+  *retinal_background_lab_values.csv* : csv file with the median retinal background for each image extracted with retinal pigmentation extraction script
   
 
 # Execution instructions
