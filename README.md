@@ -22,17 +22,16 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
 
 # Execution instructions
 
-`docker pull arajesh/rps`
-
-`docker exec -it -v <mount file system> --gpus all arajesh/rps /bin/bash`
-
-*within the docker container*
-  
-`conda activate automorph`
-  
-*change the config.py to have variables relevant to you*
-
-`python main.py`
+1. Pull the docker container and start it.
+    The docker container is stored here: https://hub.docker.com/r/arajesh17/rps
+    Please type the two commands:
+      `docker pull arajesh/rps`
+    Now in your terminal after you finished the pull, you can start the container with an interactive shell
+       `docker exec -it -v <your images path:/home/images/> -v <your results path>:/home/results/ --gpus all arajesh/rps /bin/bash
+2. Activate the python environment in the docker container
+    `conda activate automorph`
+3. Run the main.py
+    `python main.py`
 
 
 ### To-Do
