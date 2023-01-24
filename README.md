@@ -26,10 +26,15 @@ All color fundus photos need to be in a single directory and in png format.
 The output will have multiple directories:
 
   1. M0: preprocessing outputs
-  2. M2: image quality steps - results will be stored in M1/Good_quality/image_list.csv
+  
+  2. M1: image quality steps - results will be stored in M1/Good_quality/image_list.csv
+  
   3a. M2 disc_cup: optic disc and cup segmentation
+  
   3b. M2 binary_vessel: binary vessel segmentation
+  
   3c. M2 artery_vein: artery and vein multiclass segmentation
+  
   retinal_background_lab_values.csv : csv file with the median retinal background for each image extracted with retinal pigmentation extraction script
   
 
