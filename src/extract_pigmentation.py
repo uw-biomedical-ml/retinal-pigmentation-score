@@ -1,10 +1,11 @@
 import matplotlib.image as mpimage
+from PIL import Image
 from scipy.ndimage import binary_dilation, center_of_mass, generate_binary_structure 
 from skimage.color import rgb2gray, rgb2lab
 from skimage.morphology import flood
 import numpy as np
 import pandas as pd
-import os
+from glob import glob
 
 
 def remove_dc_island(im):
@@ -70,13 +71,33 @@ def get_inverted_masks(masks, raw_im):
 
     return inv_mask
 
+def crop_img(c_w, c_h, r, img):
+    """Code to crop an image based on the passed crops in the good quality csv with a center and radius
+
+    Args:
+        c_w (int): center of img to crop along width dimension
+        c_h (int): center of img to crop along height dimension
+        radius (int): "radius for the crop
+        img (np.array): raw numpy array of image file to crop
+
+    Returns:
+        crop_im: image that has been cropped
+    """
+    
+    w_min, w_max = int(c_w-r), int(c_w+r) 
+    h_min, h_max = int(c_h-r), int(c_h+r)
+    
+    crop_img = img[w_min:w_max, h_min:h_max]
+
+    return crop_img
+
 def get_pigmentation(config):
     """extracts the median color from the retinal background in the Lab space and
     stores it as a csv
     """
 
-    im_dir = config.results_dir+ "M1/Good_quality/"
-    vp = config.results_dir + "binary_vessel/raw_binary/"
+    crop_csv = pd.read_csv(config.results_dir+ "M1/Good_quality/image_list.csv")
+    vp = config.results_dir + "M2/binary_vessel/raw_binary/"
     dp = config.results_dir + "M2/optic_disc_cup/raw/"
     out_csv = config.results_dir  + 'retinal_background_lab_values.csv'
 
@@ -85,20 +106,24 @@ def get_pigmentation(config):
     a = []
     b = []
 
-    for f in os.listdir(im_dir):
+    for _,row in crop_csv.iterrows():
 
+        im_pth = row.Name
+        f = im_pth.split('/')[-1]
+
+        im = mpimage.imread(im_pth)
+        im = crop_img(row.centre_w, row.centre_h, row.radius, im)
         masks = get_masks(vp+f, dp+f)
-        inv_mask = get_inverted_masks(masks)
+        inv_mask = get_inverted_masks(masks, im)
     
-        im = mpimage.imread(im_dir+f)
         vals = rgb2lab(im[inv_mask])
         med  = np.median(vals, axis=0)
-        f_list.append(f)
+        f_list.append(im_pth)
         L.append(med[0])
         a.append(med[1])
         b.append(med[2])
 
-    data = {'f': f_list, 'L': L, 'a': a, 'b':b}
+    data = {'Name': f_list, 'L': L, 'a': a, 'b':b}
     df = pd.DataFrame.from_dict(data)
     print('Lab color values are stored at {}'.format(out_csv))
     df.to_csv(out_csv, index=False)

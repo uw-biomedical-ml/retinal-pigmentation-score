@@ -52,7 +52,7 @@ def quality_assessment(cfg):
 
 
     # if not sparse, then copy and save all the images into a M1/Good_quality or M1/Bad_quality folder
-    if not cfg.sparse:
+    if cfg.sparse == False:
         print('copying good and bad quality images from M0/images into subsequent directories')
     
         for id in gq:
