@@ -28,7 +28,7 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
 
     Please type the two commands:
     
-      `docker pull arajesh/rps`
+      `docker pull arajesh17/rps`
     
     Now in your terminal after you finished the pull, you can start the container with an interactive shell
     
