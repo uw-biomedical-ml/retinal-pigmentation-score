@@ -46,11 +46,15 @@ The output will have multiple directories:
 
 # Execution instructions
 
+1. Clone this code repository:
+
+  `git clone https://github.com/arajesh17/retinal-pigmentation-score.git`
+
 1. Pull the docker container and start it.
 
     The docker container is stored here: https://hub.docker.com/r/arajesh17/rps
 
-    Please type the two commands:
+    Please pull the repo 
     
       `docker pull arajesh17/rps`
     
