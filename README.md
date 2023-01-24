@@ -27,7 +27,7 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
 
 **Output**
 
-  All results will be dumped into a folder that you specify
+  All results will be dumped into a folder that you specify: *ie* `/data/arajesh/rps/results`
 
 The output will have multiple directories:
 
