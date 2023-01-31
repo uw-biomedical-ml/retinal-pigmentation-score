@@ -12,4 +12,3 @@ def Define_image_size(uniform, dataset):
         img_size = (912,912)
             
     return img_size
-

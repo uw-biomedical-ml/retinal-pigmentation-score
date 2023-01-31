@@ -30,7 +30,9 @@ from skimage.morphology import skeletonize,remove_small_objects
 from pathlib import Path
 import logging
 
-
+def collate_fn(batch):
+    batch = list(filter(lambda x: x is not None, batch))
+    return torch.utils.data.dataloader.default_collate(batch)
 
 def filter_frag(data_path):
     if os.path.isdir(data_path + 'raw/.ipynb_checkpoints'):
@@ -327,8 +329,7 @@ def M2_artery_vein(cfg):
     mode = 'whole'
 
     dataset = LearningAVSegData_OOD(test_dir, test_label, test_mask, img_size, dataset_name=dataset_name, crop_csv = crop_csv, train_or=False)
-    test_loader = DataLoader(dataset, batch_size=args.batchsize, shuffle=False, num_workers=cfg.worker, pin_memory=False, drop_last=False)
-    
+    test_loader = DataLoader(dataset, batch_size=args.batchsize, shuffle=False, num_workers=cfg.worker, pin_memory=False, drop_last=False, collate_fn=collate_fn)
     
     net_G_1 = Generator_main(input_channels=3, n_filters = 32, n_classes=4, bilinear=False)
     net_G_A_1 = Generator_branch(input_channels=3, n_filters = 32, n_classes=4, bilinear=False)

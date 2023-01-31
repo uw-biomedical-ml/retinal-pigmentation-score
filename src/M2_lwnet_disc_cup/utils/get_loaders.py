@@ -124,26 +124,22 @@ class TestDataset(Dataset):
 
     def __getitem__(self, index):
         # # load image and mask
-        img_file = self.file_paths[index]
 
-        img = Image.open(img_file)
-        img = self.crop_img(self.crop_csv, img_file, img)
+        try:
+            img_file = self.file_paths[index]
+
+            img = Image.open(img_file)
+            img = self.crop_img(self.crop_csv, img_file, img)
         
-        #mask = Image.open(self.mask_list[index]).convert('L')
-        #img, coords_crop = self.crop_to_fov(img, mask)
-        original_sz = img.size[0], img.size[1]  # in numpy convention
+            original_sz = img.size[0], img.size[1]  # in numpy convention
 
-        # # load image and mask
-        # img = Image.open(self.im_list[index])
-        # original_sz = img.size[1], img.size[0]  # in numpy convention
-        # mask = Image.open(self.mask_list[index]).convert('L')
-        # img, coords_crop = self.crop_to_fov(img, mask)
-        # print(self.im_list[index], 'original size inside dataset', original_sz)
-
-        rsz = p_tr.Resize(self.tg_size)
-        tnsr = p_tr.ToTensor()
-        tr = p_tr.Compose([rsz, tnsr])
-        img = tr(img)  # only transform image
+            rsz = p_tr.Resize(self.tg_size)
+            tnsr = p_tr.ToTensor()
+            tr = p_tr.Compose([rsz, tnsr])
+            img = tr(img)  # only transform image
+        except:
+            logging.debug("error with {} in vessel disc segmentation".format(img_file))
+            return None
 
         return {
             'name': img_file.split('/')[-1].split('.')[0],
@@ -237,12 +233,16 @@ def get_train_val_loaders(csv_path_train, csv_path_val, seed_num, batch_size=4, 
     val_loader = DataLoader(dataset=val_dataset, batch_size=batch_size, num_workers=num_workers, pin_memory=torch.cuda.is_available())
     return train_loader, val_loader
 
+def collate_fn(batch):
+    batch = list(filter(lambda x: x is not None, batch))
+    return torch.utils.data.dataloader.default_collate(batch)
+
 def get_test_dataset(data_path, crop_csv, csv_path='test.csv', tg_size=(512, 512), batch_size=1, num_workers=1):
     # csv_path will only not be test.csv when we want to build training set predictions
-    #path_test_csv = osp.join(data_path, csv_path)
+
     path_test_csv = data_path
     test_dataset = TestDataset(crop_csv, csv_path=path_test_csv, tg_size=tg_size)
-    test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size, num_workers=num_workers, pin_memory=False)
+    test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size, num_workers=num_workers, pin_memory=False, collate_fn=collate_fn)
 
     return test_loader
 

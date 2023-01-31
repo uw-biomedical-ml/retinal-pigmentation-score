@@ -1,5 +1,6 @@
 '''
 yukun 20210801
+modified by arajesh 2022
 '''
 
 import torch.nn.functional as F
@@ -22,6 +23,12 @@ from skimage import io
 from .FD_cal import fractal_dimension,vessel_density
 import shutil
 from pathlib import Path
+
+def collate_fn(batch):
+
+    # collates to remove none objects from the batch that failed during batch processing d/t corrupted images
+    batch = list(filter(lambda x: x is not None, batch))
+    return torch.utils.data.dataloader.default_collate(batch)
 
 
 def filter_frag(data_path):
@@ -101,6 +108,11 @@ def segment_fundus(data_path, net_1, net_2, net_3, net_4, net_5, net_6, net_7, n
         
     with tqdm(total=n_val, desc='Validation round', unit='batch', leave=False) as pbar:
         for batch in loader:
+
+            # pass if the batch is none because of the error handling
+            if batch is None:
+                continue
+
             imgs = batch['image']
             ori_width=batch['width']
             ori_height=batch['height']
@@ -169,8 +181,6 @@ def segment_fundus(data_path, net_1, net_2, net_3, net_4, net_5, net_6, net_7, n
 def test_net(results_dir, batch_size, num_workers, device, dataset_train, dataset_test, image_size, job_name, threshold, checkpoint_mode, mask_or=True, train_or=False, crop_csv=''):
 
      
-
-
     data_path = results_dir+ "M2/binary_vessel/"
     test_dir = results_dir+ "M1/Good_quality/"
     
@@ -181,7 +191,7 @@ def test_net(results_dir, batch_size, num_workers, device, dataset_train, datase
     VD_list = []
     
     dataset_data = SEDataset_out(test_dir, test_label, mask_dir, image_size, dataset_test, threshold, uniform='True', crop_csv=crop_csv, train_or=False)
-    test_loader = DataLoader(dataset_data, batch_size=batch_size, shuffle=False, num_workers=num_workers, pin_memory=False, drop_last=False)
+    test_loader = DataLoader(dataset_data, batch_size=batch_size, shuffle=False, num_workers=num_workers, pin_memory=False, collate_fn=collate_fn, drop_last=False)
     
     dir_checkpoint_1= Path(__file__).parent / "./Saved_model/train_on_{}/{}_savebest_randomseed_{}/G_best_F1_epoch.pth".format(dataset_train,job_name,24)
     dir_checkpoint_2= Path(__file__).parent / "./Saved_model/train_on_{}/{}_savebest_randomseed_{}/G_best_F1_epoch.pth".format(dataset_train,job_name,26)

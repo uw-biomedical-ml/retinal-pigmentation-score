@@ -22,6 +22,7 @@ from skimage import filters, measure
 import skimage
 import pandas as pd
 from skimage.morphology import skeletonize,remove_small_objects
+
 # argument parsing
 parser = argparse.ArgumentParser()
 required_named = parser.add_argument_group('required arguments')

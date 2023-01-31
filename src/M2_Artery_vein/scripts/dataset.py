@@ -241,15 +241,18 @@ class LearningAVSegData_OOD(Dataset):
 
     def __getitem__(self, i):
 
-        f_path = self.file_paths[i] 
+        try:
+            f_path = self.file_paths[i] 
 
-        img = Image.open(f_path)
-        img = self.crop_img(self.crop_csv, f_path, img)
-        ori_width, ori_height = img.size
-        img = img.resize(self.img_size)
+            img = Image.open(f_path)
+            img = self.crop_img(self.crop_csv, f_path, img)
+            ori_width, ori_height = img.size
+            img = img.resize(self.img_size)
 
-        img= self.preprocess(img, self.dataset_name, self.img_size, self.train_or)
-        i += 1
+            img= self.preprocess(img, self.dataset_name, self.img_size, self.train_or)
+        except:
+            logging.debug("error with {} during M2 artery vein".format(f_path))
+            return None
         return {
             'name': f_path.split('/')[-1].split('.')[0], # split to just the name without absolute path or file extension
             'width': ori_width,

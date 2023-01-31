@@ -437,8 +437,8 @@ def prediction_eval(model_1,model_2,model_3,model_4,model_5,model_6,model_7,mode
      
 
     n_val = len(test_loader)
-    
     seg_results_raw_path = '{}M2/optic_disc_cup/raw/'.format(cfg.results_dir)
+
     if not os.path.isdir(seg_results_raw_path):
         os.makedirs(seg_results_raw_path)
 
