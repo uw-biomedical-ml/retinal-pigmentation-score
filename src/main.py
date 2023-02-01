@@ -28,7 +28,6 @@ if __name__ == "__main__":
 
     # deep learning disc and vessel segmentation
     M2_VS.M2_vessel_seg(config)
-#    M2_AV.M2_artery_vein(config)
     M2_DC.M2_disc_cup(config)
 
     # extract retinal pigmentation score
