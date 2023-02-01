@@ -34,4 +34,4 @@ if __name__ == "__main__":
 
     # extract retinal pigmentation score
     print("extracting pigmentation")
-#    extract_pigmentation.get_pigmentation(config)
+    extract_pigmentation.get_pigmentation(config)

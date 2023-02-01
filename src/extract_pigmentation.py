@@ -8,6 +8,9 @@ import numpy as np
 import pandas as pd
 from glob import glob
 import os
+import logging 
+
+log = logging.getLogger("extract_pigmentation")
 
 
 def remove_dc_island(im):
@@ -115,11 +118,14 @@ def get_pigmentation(config):
         im_pth = row.Name
         f = im_pth.split('/')[-1]
 
-        im = Image.open(im_pth)
-        im = crop_img(row.centre_w, row.centre_h, row.radius, im)
-        masks = get_masks(vp+f, dp+f)
-        inv_mask = get_inverted_masks(masks, np.array(im))
-    
+        try:
+            im = Image.open(im_pth)
+            im = crop_img(row.centre_w, row.centre_h, row.radius, im)
+            masks = get_masks(vp+f, dp+f)
+            inv_mask = get_inverted_masks(masks, np.array(im))
+        except IOError:
+            log.warning("{} was not processsed, cannot get rps, chekc logs".format(im_pth))
+        
         vals = rgb2lab(np.array(im)[inv_mask])
         med  = np.median(vals, axis=0)
         f_list.append(im_pth)
