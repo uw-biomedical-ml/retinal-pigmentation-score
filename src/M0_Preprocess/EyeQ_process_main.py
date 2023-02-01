@@ -7,6 +7,9 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 from .fundus_prep import process_without_gb, imread, imwrite
 from random import sample
 from pathlib import Path
+import logging
+
+log = logging.getLogger("pre-processing")
 
 
 def create_resolution_information(image_dir):
@@ -56,15 +59,17 @@ def process(image_list, save_path, cfg):
             if not cfg.sparse:
                 imwrite(save_path + image_path.split('.')[0] + '.png', r_img)
 
+            name_list.append(cfg.image_dir+image_path)
+
         except IndexError:
             print("\nThe file {} has not been added to the resolution_information.csv found at {}\n\
                    Please update this file with the script found at /lee_lab_scripts/create_resolution.py and re-run the code".format( \
                        image_path, resolution_csv_path))
             exit(1)
-        except ValueError:
-            print('error with boundary for')
+        except:
+            log.error("exception occurred", exc_info=True)
+            log.warning("error with {}".format(image_path))
 
-        name_list.append(cfg.image_dir+image_path)
         
 
     scale_list = [a*2/912 for a in radius_list]
