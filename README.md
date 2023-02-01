@@ -1,5 +1,5 @@
 # retinal-pigmentation-score
-Calculate the retinal pigmentation from a color fundus image
+Calculate the retinal pigmentation from a color fundus image using deep learning to segment the vasculature and nerve, then find the median pixel value of retinal background in the Lab colorspace.
 
 ## Credit
 A significant portion of this pipeline was built from code from Automorph. Thank you!
