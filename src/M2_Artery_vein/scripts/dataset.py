@@ -14,6 +14,7 @@ from PIL import Image, ImageEnhance
 from torchvision.transforms import functional as F
 import pandas as pd
 
+log = logging.getLogger("M2_AVseg.dataset")
 
 class LearningAVSegData(Dataset):
     def __init__(self, imgs_dir, label_dir,  mask_dir, img_size, dataset_name, train_or=True, mask_suffix=''):
@@ -29,7 +30,7 @@ class LearningAVSegData(Dataset):
         self.ids = [splitext(file)[0] for file in listdir(imgs_dir)
                     if not file.startswith('.')]
         #logging.info(f'Creating dataset with {(self.ids)} ')
-        logging.info(f'Creating dataset with {len(self.ids)} examples')
+        log.info(f'Creating dataset with {len(self.ids)} examples')
 
     def __len__(self):
         return len(self.ids)
@@ -163,7 +164,7 @@ class LearningAVSegData_OOD(Dataset):
         
         fps = pd.read_csv(crop_csv, usecols=['Name']).values.ravel()
         self.file_paths = fps
-        logging.info(f'Creating dataset with {len(self.file_paths)} examples')
+        log.info(f'Creating dataset with {len(self.file_paths)} examples')
 
     def __len__(self):
         return len(self.file_paths)
@@ -251,7 +252,8 @@ class LearningAVSegData_OOD(Dataset):
 
             img= self.preprocess(img, self.dataset_name, self.img_size, self.train_or)
         except:
-            logging.debug("error with {} during M2 artery vein".format(f_path))
+            log.error("Excpetion occured", exc_info=True)
+            log.warning("error with {} during M2 artery vein".format(f_path))
             return None
         return {
             'name': f_path.split('/')[-1].split('.')[0], # split to just the name without absolute path or file extension

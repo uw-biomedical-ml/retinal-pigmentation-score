@@ -13,7 +13,9 @@ from scipy.ndimage import rotate
 from PIL import Image, ImageEnhance
 import pandas as pd
 
-logging.basicConfig(filename='test.log')
+
+
+log = logging.getLogger('M2_vesselseg.dataset')
 
 class SEDataset_out(Dataset):
 
@@ -30,9 +32,8 @@ class SEDataset_out(Dataset):
 
         fps = pd.read_csv(crop_csv, usecols=['Name']).values.ravel()
         self.file_paths = fps
-        print(fps)
         
-        logging.info(f'Creating dataset with {len(self.file_paths)} examples')
+        log.info(f'Creating dataset with {len(self.file_paths)} examples')
 
     def __len__(self):
         return len(self.file_paths)
@@ -124,7 +125,8 @@ class SEDataset_out(Dataset):
 
         except:
             # insert log statement
-            logging.debug("file: {} has failed V2 vessel segmentation pre-processing".format(f_path))
+            log.error("Exception occurred", exc_info=True)
+            log.warning("file: {} has failed V2 vessel segmentation pre-processing".format(f_path))
             return None
 
         return {

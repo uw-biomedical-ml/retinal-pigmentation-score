@@ -6,8 +6,12 @@ import M2_Artery_vein.test_outside as M2_AV
 import M2_lwnet_disc_cup.generate_av_results as M2_DC
 import extract_pigmentation
 import config
-
+import logging
 import os
+
+
+logging.basicConfig(level=logging.INFO,filename='data.log', filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
+
 print('path to the M0 file', os.path.abspath(M0_EQ.__file__))
 print('config values', 'ukb', config.ukb, 'sparse', config.sparse)
 
@@ -26,7 +30,7 @@ if __name__ == "__main__":
     # deep learning disc and vessel segmentation
     M2_VS.M2_vessel_seg(config)
 #    M2_AV.M2_artery_vein(config)
-#    M2_DC.M2_disc_cup(config)
+    M2_DC.M2_disc_cup(config)
 
     # extract retinal pigmentation score
     print("extracting pigmentation")

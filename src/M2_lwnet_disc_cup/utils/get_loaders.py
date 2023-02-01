@@ -13,6 +13,8 @@ import torch
 import logging
 from glob import glob
 
+log = logging.getLogger("M2_lwnet.dataset")
+
 class TrainDataset(Dataset):
     def __init__(self, csv_path, transforms=None, label_values=None):
         
@@ -85,7 +87,7 @@ class TestDataset(Dataset):
         fps = pd.read_csv(crop_csv, usecols=['Name']).values.ravel()
         self.file_paths = fps
         #logging.info(f'Creating dataset with {(self.file_paths)} ')
-        logging.info(f'Creating dataset with {len(self.file_paths)} examples')
+        log.info(f'Creating dataset with {len(self.file_paths)} examples')
         
         #self.mask_list = df.mask_paths
         self.tg_size = tg_size
@@ -138,7 +140,8 @@ class TestDataset(Dataset):
             tr = p_tr.Compose([rsz, tnsr])
             img = tr(img)  # only transform image
         except:
-            logging.debug("error with {} in vessel disc segmentation".format(img_file))
+            log.error("Exception occurred", exc_info=True)
+            log.warning("error with {} in vessel disc segmentation".format(img_file))
             return None
 
         return {
