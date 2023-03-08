@@ -88,9 +88,14 @@ class SEDataset_out(Dataset):
 
     @classmethod
     def preprocess(self, img, dataset_name, img_size, train_or, pthrehold):
+        """ preprocessing consists of normalizing pixel values by mean and standard deviation of all pixel values in the image"""
 
         img_array = np.array(img)
 
+        # reshape to three dimensions
+        if len(img_array.shape) == 2:
+            img_array = np.expand_dims(img_array, axis=2)
+         
         if np.sum(img_array[...,2])==0:
             img_array = np.concatenate((img_array[...,1][...,np.newaxis],img_array[...,1][...,np.newaxis],img_array[...,1][...,np.newaxis]),axis=2)
             mean_value=np.mean(img_array[img_array[...,0] > pthrehold],axis=0)
@@ -102,9 +107,6 @@ class SEDataset_out(Dataset):
             std_value=np.std(img_array[img_array[...,0] > pthrehold],axis=0)
             img_array=(img_array-mean_value)/std_value
 
-        if len(img_array.shape) == 2:
-            img_array = np.expand_dims(img_array, axis=2)
-            
         img_array = img_array.transpose((2, 0, 1))
 
         return img_array

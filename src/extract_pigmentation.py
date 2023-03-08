@@ -98,20 +98,30 @@ def crop_img(c_w, c_h, r, img):
 
     return crop_img
 
+def adjust_to_median(im, mask, med):
+    # pass mask and the median values and adjust them to the median
+    mask_vals = rgb2lab(np.array(im)[mask])
+    mask_med = np.median(mask_vals,axis=0)
+    return med/mask_med
+         
+
 def get_pigmentation(config):
     """extracts the median color from the retinal background in the Lab space and
     stores it as a csv
     """
 
     crop_csv = pd.read_csv(config.results_dir+ "M1/Good_quality/image_list.csv")
-    vp = config.results_dir + "M2/binary_vessel/raw_binary/"
+    #vp = config.results_dir + "M2/binary_vessel/raw_binary/"
+    vp = config.results_dir + "M2/artery_vein/raw/"
     dp = config.results_dir + "M2/optic_disc_cup/raw/"
     out_csv = config.results_dir  + 'retinal_background_lab_values.csv'
 
-    f_list = []
-    L = []
-    a = []
-    b = []
+    data = {'Name': [], 'L': [], 'a': [], 'b': [],
+            'L_std': [], 'a_std': [], 'b_std': [],
+            'L_d': [], 'a_d': [], 'b_d': [], 
+            'L_a': [], 'a_a': [], 'b_a': [], 
+            'L_v': [], 'a_v': [], 'b_v': []}
+
 
     for _,row in crop_csv.iterrows():
 
@@ -128,10 +138,33 @@ def get_pigmentation(config):
         
         vals = rgb2lab(np.array(im)[inv_mask])
         med  = np.median(vals, axis=0)
-        f_list.append(im_pth)
-        L.append(med[0])
-        a.append(med[1])
-        b.append(med[2])
+        data['Name'].append(im_pth)
+        data['L'].append(med[0])
+        data['a'].append(med[1])
+        data['b'].append(med[2])
+
+        std = np.std(vals, axis=0)
+        data['L_std'].append(std[0])
+        data['a_std'].append(std[1])
+        data['b_std'].append(std[2])
+
+        # calculate ratio to cup
+        cup_adjusted = adjust_to_median(im, masks[3].astype(bool), med)
+        data['L_d'].append(cup_adjusted[0])
+        data['a_d'].append(cup_adjusted[1])
+        data['b_d'].append(cup_adjusted[2])
+
+        # calculate ratio to artery
+        artery_adjusted = adjust_to_median(im, masks[0].astype(bool), med)
+        data['L_a'].append(artery_adjusted[0])
+        data['a_a'].append(artery_adjusted[1])
+        data['b_a'].append(artery_adjusted[2])
+
+        # calculate ratio to veins
+        vein_adjusted = adjust_to_median(im, masks[1].astype(bool), med)
+        data['L_v'].append(artery_adjusted[0])
+        data['a_v'].append(artery_adjusted[1])
+        data['b_v'].append(artery_adjusted[2])
 
         if config.debug == True:
             
@@ -145,7 +178,6 @@ def get_pigmentation(config):
             plt.axis('off')
             plt.savefig(config.results_dir+'debug/{}_debug.png'.format(f))
 
-    data = {'Name': f_list, 'L': L, 'a': a, 'b':b}
     df = pd.DataFrame.from_dict(data)
     print('Lab color values are stored at {}'.format(out_csv))
     df.to_csv(out_csv, index=False)

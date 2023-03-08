@@ -1,7 +1,5 @@
-#image_dir = "/data/anand/Automorph_data/test/images/" 
-#results_dir= "/data/anand/Automorph_data/test/results/"
-image_dir = "/home/images/"
-results_dir = "/home/results/"
+image_dir = "/data/ukbiobank/blobs/fundus/data/"
+results_dir = "/data/yue/automorph_azure/results/results/"
 worker = 0
 sample_num = False #Put False if you do not want to sample
 device = "cuda" #can specify cuda:0  or cuda or CPU
