@@ -31,18 +31,19 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
 
 The output will have multiple directories:
 
-  1. M0: preprocessing outputs
-  
-  2. M1: image quality steps - results will be stored in M1/Good_quality/image_list.csv
-  
-  3a. M2 disc_cup: optic disc and cup segmentation
-  
-  3b. M2 binary_vessel: binary vessel segmentation
-  
-  3c. M2 artery_vein: artery and vein multiclass segmentation
-  
-  *retinal_background_lab_values.csv* : csv file with the median retinal background for each image extracted with retinal pigmentation extraction script
-  
+|-- M0/ Pre-processing outputs
+|-- M1/ Image Quality Assesment
+|   |--Good_quality/image_list.csv (list of good quality images)
+|-- M2/
+|   |--binary_vessel/raw_binary/ (binary vessel segmentation masks)
+|       |--vessel_seg1.png
+|       |--vessel_seg2.png
+|   |--disc_cup/optic_disc_cup/ (disc segmentation masks)
+|       |--disc_seg1.png
+|       |--disc_seg2.png
+|-- retinal_pigmentation_score.csv (csv with median a,b values and 'pigmentation' a.k.a RPS score)
+|-- RPS_representative_images.png (representative figure giving context for what RPS scores are with regards to RGB colors)
+
 
 # Execution instructions
 
