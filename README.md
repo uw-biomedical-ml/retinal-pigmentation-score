@@ -41,19 +41,19 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
 
 > The output will have multiple directories:
 
-  .
-  |-- M0/ Pre-processing outputs
-  |-- M1/ Image Quality Assesment
-  |   |--Good_quality/image_list.csv (list of good quality images)
-  |-- M2/
-  |   |--binary_vessel/raw_binary/ (binary vessel segmentation masks)
-  |       |--vessel_seg1.png
-  |       |--vessel_seg2.png
-  |   |--disc_cup/optic_disc_cup/ (disc segmentation masks)
-  |       |--disc_seg1.png
-  |       |--disc_seg2.png
-  |-- retinal_pigmentation_score.csv (csv with median a,b values and 'pigmentation' a.k.a RPS score)
-  |-- RPS_representative_images.png (representative figure giving context for what RPS scores are with regards to RGB colors)
+    .
+    |-- M0/ Pre-processing outputs
+    |-- M1/ Image Quality Assesment
+    |   |--Good_quality/image_list.csv (list of good quality images)
+    |-- M2/
+    |   |--binary_vessel/raw_binary/ (binary vessel segmentation masks)
+    |       |--vessel_seg1.png
+    |       |--vessel_seg2.png
+    |   |--disc_cup/optic_disc_cup/ (disc segmentation masks)
+    |       |--disc_seg1.png
+    |       |--disc_seg2.png
+    |-- retinal_pigmentation_score.csv (csv with median a,b values and 'pigmentation' a.k.a RPS score)
+    |-- RPS_representative_images.png (representative figure giving context for what RPS scores are with regards to RGB colors)
 
 
 # Execution instructions
