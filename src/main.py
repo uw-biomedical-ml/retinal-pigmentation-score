@@ -15,29 +15,34 @@ logging.basicConfig(level=logging.INFO,filename='data.log', filemode='w', format
    
 if __name__ == "__main__":
 
-    print("Running EyeQ process")
+    print('\n--------------------\nRunning PreProcessing')
     # preprocessing
     M0_EQ.EyeQ_process(config)
 
     # Eye Quality deep learning assesment
-    print("Running Image quality assesment")
+    print('\n--------------------\nRunning Image Quality Assesment')
     M1_EP.M1_image_quality(config)
     M1_QA.quality_assessment(config)
 
     # deep learning disc and vessel segmentation
-    print('vesselseg')
+    print('\n--------------------\nRunning Vessel Segmentation')
     M2_VS.M2_vessel_seg(config)
 
-    print('dicsseg')
+    print('\n--------------------\nRunning Disc Segmentation')
     M2_DC.M2_disc_cup(config)
 
     # extract retinal pigmentation score
-    print("extracting pigmentation")
+    print('\n--------------------\nRunning Pigment Extractor')
     df = extract_pigmentation.get_pigmentation(config)
 
     # fit RPS normalizer
+    print('\n--------------------\nRunning RPS Normalizer')
     rps_norm = RPS_normalizer(df)
     rps_norm.fit()
     rps_norm.transform()
     rps_norm.save_example()
+
+    print('\n\n\nSuccess!\n--------------------\nFiles are stored here...\nCSV with RPS at {}\nSegmentations at {}\nRepresentative Plot {}\n\n'.format(config.results_dir+"retinal_pigmentation_score.csv", config.results_dir+"M2/*", config.results_dir+"RPS_representative_images.png"))
+
+
 

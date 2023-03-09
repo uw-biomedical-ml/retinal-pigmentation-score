@@ -239,8 +239,7 @@ def M1_image_quality(cfg):
     checkpoint_path_7 = str(Path(__file__).parent / './{}/{}/{}/1_seed_40/best_loss_checkpoint.pth'.format(args.task, args.load, args.model ))
     checkpoint_path_8 = str(Path(__file__).parent / './{}/{}/{}/0_seed_42/best_loss_checkpoint.pth'.format(args.task, args.load, args.model ))
  
-    logging.info("path {}".format(checkpoint_path_1))
-    logging.info("exists {}".format(os.path.exists(checkpoint_path_1)))
+    log.info("path {}, exists: {}".format(checkpoint_path_1, os.path.exists(checkpoint_path_1)))
 
     if args.load:
         model_fl_1.load_state_dict(
@@ -289,8 +288,8 @@ def M1_image_quality(cfg):
                   batch_size=args.batchsize,
                   image_size=img_size)
     except KeyboardInterrupt:
-        torch.save(model_fl.state_dict(), 'INTERRUPTED.pth')
-        logging.info('Saved interrupt')
+        torch.save(model_fl_1.state_dict(), 'INTERRUPTED.pth')
+        log.info('Saved interrupt')
         try:
             sys.exit(0)
         except SystemExit:

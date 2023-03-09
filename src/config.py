@@ -1,5 +1,3 @@
-#image_dir = "/data/ukbiobank/blobs/fundus/data/"
-#results_dir = "/data/yue/automorph_azure/results/results/"
 image_dir = '/data/anand/Automorph_data/test/images/'
 results_dir = '/data/anand/Automorph_data/test/results/'
 

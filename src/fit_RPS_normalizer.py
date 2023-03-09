@@ -64,7 +64,8 @@ class RPS_normalizer():
             rgb = lab2rgb(lab)
 
             ax.imshow(rgb.reshape((1,1,3)))
-            ax.set_title("{}\na,b values: [{:.1f}, {:.1f}]\n RPS score {:.1f}".format(name.split('/')[-1],lab[1],lab[2], rps))
+            #ax.set_title("{}\na,b values: [{:.1f}, {:.1f}]\n RPS score {:.1f}".format(name.split('/')[-1],lab[1],lab[2], rps))
+            ax.set_title("img{}\na,b values: [{:.1f}, {:.1f}]\n RPS score {:.1f}".format(idx,lab[1],lab[2], rps))
             ax.get_xaxis().set_visible(False)
             ax.get_yaxis().set_visible(False)
             ax.get_xaxis().set_ticks([])
@@ -99,6 +100,6 @@ class RPS_normalizer():
         plt.tight_layout()
         plt.savefig(config.results_dir + 'RPS_representative_images.png')
 
-#df = pd.read_csv("/data/anand/color_fundus/manuscript_code/EPIC_cohort_RPS.csv")
-#RIPPER = RPS_normalizer(df)
-#RIPPER.save_example()
+df = pd.read_csv("/data/anand/color_fundus/manuscript_code/EPIC_cohort_RPS.csv")
+RIPPER = RPS_normalizer(df)
+RIPPER.save_example()
