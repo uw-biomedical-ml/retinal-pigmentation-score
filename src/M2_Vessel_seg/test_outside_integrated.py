@@ -83,27 +83,26 @@ def segment_fundus(data_path, net_1, net_2, net_3, net_4, net_5, net_6, net_7, n
     
     
 
-    if not os.path.isdir(seg_results_small_path):
-        os.makedirs(seg_results_small_path)
-
-    if not os.path.isdir(seg_results_raw_path):
-        os.makedirs(seg_results_raw_path)
-        
-    if not os.path.isdir(seg_results_small_binary_path):
-        os.makedirs(seg_results_small_binary_path)
+#    if not os.path.isdir(seg_results_small_path):
+#        os.makedirs(seg_results_small_path)
+#
+#    if not os.path.isdir(seg_results_raw_path):
+#        os.makedirs(seg_results_raw_path)
+#        
+#    if not os.path.isdir(seg_results_small_binary_path):
+#        os.makedirs(seg_results_small_binary_path)
 
     if not os.path.isdir(seg_results_raw_binary_path):
         os.makedirs(seg_results_raw_binary_path)
     
-    
-    seg_uncertainty_small_path = data_path + 'resize_uncertainty/'        
-    if not os.path.isdir(seg_uncertainty_small_path):
-        os.makedirs(seg_uncertainty_small_path)
-    
-    seg_uncertainty_raw_path = data_path + 'raw_uncertainty/'
-    
-    if not os.path.isdir(seg_uncertainty_raw_path):
-        os.makedirs(seg_uncertainty_raw_path)
+#    seg_uncertainty_small_path = data_path + 'resize_uncertainty/'        
+#    if not os.path.isdir(seg_uncertainty_small_path):
+#        os.makedirs(seg_uncertainty_small_path)
+#    
+#    seg_uncertainty_raw_path = data_path + 'raw_uncertainty/'
+#    
+#    if not os.path.isdir(seg_uncertainty_raw_path):
+#        os.makedirs(seg_uncertainty_raw_path)
         
         
     with tqdm(total=n_val, desc='Validation round', unit='batch', leave=False) as pbar:
@@ -146,7 +145,7 @@ def segment_fundus(data_path, net_1, net_2, net_3, net_4, net_5, net_6, net_7, n
             
             mask_pred_sigmoid=(mask_pred_sigmoid_1+mask_pred_sigmoid_2+mask_pred_sigmoid_3+mask_pred_sigmoid_4+mask_pred_sigmoid_5+mask_pred_sigmoid_6+mask_pred_sigmoid_7+mask_pred_sigmoid_8+mask_pred_sigmoid_9+mask_pred_sigmoid_10)/10
             
-            uncertainty_map = torch.sqrt((torch.square(mask_pred_sigmoid-mask_pred_sigmoid_1)+torch.square(mask_pred_sigmoid-mask_pred_sigmoid_2)+torch.square(mask_pred_sigmoid-mask_pred_sigmoid_3)+torch.square(mask_pred_sigmoid-mask_pred_sigmoid_4)+torch.square(mask_pred_sigmoid-mask_pred_sigmoid_5)+torch.square(mask_pred_sigmoid-mask_pred_sigmoid_6)+torch.square(mask_pred_sigmoid-mask_pred_sigmoid_7)+torch.square(mask_pred_sigmoid-mask_pred_sigmoid_8)+torch.square(mask_pred_sigmoid-mask_pred_sigmoid_9)+torch.square(mask_pred_sigmoid-mask_pred_sigmoid_10))/10)
+            #uncertainty_map = torch.sqrt((torch.square(mask_pred_sigmoid-mask_pred_sigmoid_1)+torch.square(mask_pred_sigmoid-mask_pred_sigmoid_2)+torch.square(mask_pred_sigmoid-mask_pred_sigmoid_3)+torch.square(mask_pred_sigmoid-mask_pred_sigmoid_4)+torch.square(mask_pred_sigmoid-mask_pred_sigmoid_5)+torch.square(mask_pred_sigmoid-mask_pred_sigmoid_6)+torch.square(mask_pred_sigmoid-mask_pred_sigmoid_7)+torch.square(mask_pred_sigmoid-mask_pred_sigmoid_8)+torch.square(mask_pred_sigmoid-mask_pred_sigmoid_9)+torch.square(mask_pred_sigmoid-mask_pred_sigmoid_10))/10)
             
             
             n_image = mask_pred_sigmoid.shape[0]
@@ -157,24 +156,32 @@ def segment_fundus(data_path, net_1, net_2, net_3, net_4, net_5, net_6, net_7, n
                 n_ori_width = ori_width[i]
                 n_ori_height = ori_height[i]
 
-                save_image(torch.unsqueeze(uncertainty_map[i,...], 0), seg_uncertainty_small_path+n_img_name+'.png')
-                uncertainty_img = Image.open(seg_uncertainty_small_path+n_img_name+'.png').resize((n_ori_width,n_ori_height)).convert('L') 
-                uncertainty_tensor = torchvision.transforms.ToTensor()(uncertainty_img)
-                save_image(uncertainty_tensor, seg_uncertainty_raw_path+n_img_name+'.png')
+                #save_image(torch.unsqueeze(uncertainty_map[i,...], 0), seg_uncertainty_small_path+n_img_name+'.png')
+                #uncertainty_img = Image.open(seg_uncertainty_small_path+n_img_name+'.png').resize((n_ori_width,n_ori_height)).convert('L') 
+                #uncertainty_tensor = torchvision.transforms.ToTensor()(uncertainty_img)
+                #save_image(uncertainty_tensor, seg_uncertainty_raw_path+n_img_name+'.png')
 
-                save_image(torch.unsqueeze(mask_pred_sigmoid[i,...], 0), seg_results_small_path+n_img_name+'.png')
-                mask_pred_resize_bin=torch.zeros(torch.unsqueeze(mask_pred_sigmoid[i,...], 0).shape)
-                mask_pred_resize_bin[torch.unsqueeze(mask_pred_sigmoid[i,...], 0)>=0.5]=1
-                save_image(mask_pred_resize_bin, seg_results_small_binary_path+n_img_name+'.png')
+                #save_image(torch.unsqueeze(mask_pred_sigmoid[i,...], 0), seg_results_small_path+n_img_name+'.png')
+                #mask_pred_resize_bin=torch.zeros(torch.unsqueeze(mask_pred_sigmoid[i,...], 0).shape)
+                #mask_pred_resize_bin[torch.unsqueeze(mask_pred_sigmoid[i,...], 0)>=0.5]=1
+                #save_image(mask_pred_resize_bin, seg_results_small_binary_path+n_img_name+'.png')
 
-                mask_pred_img = Image.open(seg_results_small_path+n_img_name+'.png').resize((n_ori_width,n_ori_height)).convert('L') 
-                mask_pred_tensor = torchvision.transforms.ToTensor()(mask_pred_img)
+                #mask_pred_img = Image.open(seg_results_small_path+n_img_name+'.png').resize((n_ori_width,n_ori_height)).convert('L') 
+                #mask_pred_tensor = torchvision.transforms.ToTensor()(mask_pred_img)
 
-                mask_pred_numpy_bin=torch.zeros(mask_pred_tensor.shape)
-                mask_pred_numpy_bin[mask_pred_tensor>=0.5]=1
+                #mask_pred_numpy_bin=torch.zeros(mask_pred_tensor.shape)
+                #mask_pred_numpy_bin[mask_pred_tensor>=0.5]=1
 
-                save_image(mask_pred_tensor, seg_results_raw_path+n_img_name+'.png')
-                save_image(mask_pred_numpy_bin, seg_results_raw_binary_path+n_img_name+'.png')
+                #save_image(mask_pred_tensor, seg_results_raw_path+n_img_name+'.png')
+                #save_image(mask_pred_numpy_bin, seg_results_raw_binary_path+n_img_name+'.png')
+
+                mask_pred_img2 = torchvision.transforms.ToPILImage()(mask_pred_sigmoid[i,...])
+                mask_pred_img2 = mask_pred_img2.resize((n_ori_width, n_ori_height)).convert("L")
+                mask_pred_tensor2  = torchvision.transforms.ToTensor()(mask_pred_img2)
+
+                mask_pred_numpy_bin2=torch.zeros(mask_pred_tensor2.shape)
+                mask_pred_numpy_bin2[mask_pred_tensor2>=0.5]=1
+                save_image(mask_pred_numpy_bin2, seg_results_raw_binary_path+n_img_name+'.png')
 
             pbar.update(imgs.shape[0])
 
@@ -249,13 +256,13 @@ def test_net(results_dir, batch_size, num_workers, device, dataset_train, datase
         
     segment_fundus(data_path, net_1, net_2, net_3, net_4, net_5, net_6, net_7, net_8, net_9, net_10, test_loader, device, dataset_train, job_name, mask_or, train_or)
     
-    FD_list, Name_list, VD_list, width_cal = filter_frag(data_path)
-    
-    if not os.path.exists('{}M3/'.format(results_dir)):
-        os.makedirs('{}M3/'.format(results_dir))
-                            
-    Data4stage2 = pd.DataFrame({'Image_id':Name_list, 'FD_boxC':FD_list, 'Vessel_Density':VD_list, 'Average_width':width_cal})
-    Data4stage2.to_csv('{}M3/Binary_Features_Measurement.csv'.format(results_dir), index = None, encoding='utf8')
+#    FD_list, Name_list, VD_list, width_cal = filter_frag(data_path)
+#    
+#    if not os.path.exists('{}M3/'.format(results_dir)):
+#        os.makedirs('{}M3/'.format(results_dir))
+#                            
+#    Data4stage2 = pd.DataFrame({'Image_id':Name_list, 'FD_boxC':FD_list, 'Vessel_Density':VD_list, 'Average_width':width_cal})
+#    Data4stage2.to_csv('{}M3/Binary_Features_Measurement.csv'.format(results_dir), index = None, encoding='utf8')
     
     #Optic_disk_loc(data_path)
         
