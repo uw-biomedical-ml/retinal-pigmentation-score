@@ -27,6 +27,16 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
 
 ### Output
 
+
+    .
+    ├── build                   # Compiled files (alternatively `dist`)
+    ├── docs                    # Documentation files (alternatively `doc`)
+    ├── src                     # Source files (alternatively `lib` or `app`)
+    ├── test                    # Automated tests (alternatively `spec` or `tests`)
+    ├── tools                   # Tools and utilities
+    ├── LICENSE
+    └── README.md
+    
   All results will be dumped into a folder that you specify: *ie* `/data/arajesh/rps/results`
 
 > The output will have multiple directories:
