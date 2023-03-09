@@ -42,7 +42,7 @@ if __name__ == "__main__":
     rps_norm.transform()
     rps_norm.save_example()
 
-    print('\n\n\nSuccess!\n--------------------\nFiles are stored here...\nCSV with RPS at {}\nSegmentations at {}\nRepresentative Plot {}\n\n'.format(config.results_dir+"retinal_pigmentation_score.csv", config.results_dir+"M2/*", config.results_dir+"RPS_representative_images.png"))
+    print('\n\n\nSuccess!\n--------------------\nFiles are stored here...\nCSV with RPS at: {}\nSegmentations at: {}\nRepresentative plot at: {}\n\n'.format(config.results_dir+"retinal_pigmentation_score.csv", config.results_dir+"M2/*", config.results_dir+"RPS_representative_images.png"))
 
 
 
