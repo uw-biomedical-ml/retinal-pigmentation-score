@@ -19,18 +19,19 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
 }
 ```
 
-# Dataset Format
+### Dataset Format
 
-**Input**
+### Input
   
   All color fundus photos need to be in a single directory and in png format.
 
-**Output**
+###*utput
 
   All results will be dumped into a folder that you specify: *ie* `/data/arajesh/rps/results`
 
-The output will have multiple directories:
+>The output will have multiple directories:
 
+.
 |-- M0/ Pre-processing outputs
 |-- M1/ Image Quality Assesment
 |   |--Good_quality/image_list.csv (list of good quality images)
