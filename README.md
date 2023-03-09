@@ -26,16 +26,6 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
   All color fundus photos need to be in a single directory and in png format.
 
 ### Output
-
-
-    .
-    ├── build                   # Compiled files (alternatively `dist`)
-    ├── docs                    # Documentation files (alternatively `doc`)
-    ├── src                     # Source files (alternatively `lib` or `app`)
-    ├── test                    # Automated tests (alternatively `spec` or `tests`)
-    ├── tools                   # Tools and utilities
-    ├── LICENSE
-    └── README.md
     
   All results will be dumped into a folder that you specify: *ie* `/data/arajesh/rps/results`
 
@@ -44,16 +34,16 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
     .
     |-- M0/ Pre-processing outputs
     |-- M1/ Image Quality Assesment
-    |   |--Good_quality/image_list.csv (list of good quality images)
+    |   |--Good_quality/image_list.csv **(list of good quality images)**
     |-- M2/
-    |   |--binary_vessel/raw_binary/ (binary vessel segmentation masks)
+    |   |--binary_vessel/raw_binary/ **(binary vessel segmentation masks)**
     |       |--vessel_seg1.png
     |       |--vessel_seg2.png
-    |   |--disc_cup/optic_disc_cup/ (disc segmentation masks)
+    |   |--disc_cup/optic_disc_cup/ **(disc segmentation masks)**
     |       |--disc_seg1.png
     |       |--disc_seg2.png
-    |-- retinal_pigmentation_score.csv (csv with median a,b values and 'pigmentation' a.k.a RPS score)
-    |-- RPS_representative_images.png (representative figure giving context for what RPS scores are with regards to RGB colors)
+    |-- retinal_pigmentation_score.csv **(csv with median a,b values and 'pigmentation' a.k.a RPS score)**
+    |-- RPS_representative_images.png **(representative figure giving context for what RPS scores are with regards to RGB colors)**
 
 
 # Execution instructions
