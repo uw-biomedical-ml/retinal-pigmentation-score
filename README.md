@@ -46,13 +46,16 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
     |-- RPS_representative_images.png **(representative figure giving context for what RPS scores are with regards to RGB colors)**
 
 
-# Execution instructions
+# Setup instructions
+
 
 1. Clone this code repository:
 
   `git clone https://github.com/arajesh17/retinal-pigmentation-score.git`
+  
+### Option 1 (using docker)
 
-2. Pull the docker container and start it.
+2a. Pull the docker container and start it.
 
     The docker container is stored here: https://hub.docker.com/r/arajesh17/rps
 
@@ -64,18 +67,36 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
     
       `docker run -it -v <your images path:/home/images/> -v <your results path>:/home/results/ -v <your rps repo path>:/home/retinal-pigmentation-score/ --gpus all arajesh17/rps /bin/bash`
 
-3. Activate the python environment in the docker container
+3a. Activate the python environment in the docker container
 
     `conda activate automorph`
+    
+### Option 2 create your own environment
 
-4. Run the main.py
+2b. Type the command 
+
+'conda create --name rps python=3.8'
+
+followed by 
+
+'conda activate rps'
+
+3b. Install requirements
+
+'pip install -r requirements.txt'
+
+
+# Execution Instructions
+
+4. edit 'results_dir' and 'image_dir' in 'src/config.py' to reflect the output directory you want your files to go and the directory where your images should be stored
+
+5. In your envirnoment, run main.py
 
     `python /home/retinal-pigementation-score/src/main.py`
     
-5. Figure out optimal worker number and batch_size
+6. Figure out optimal worker number and batch_size
 
   Run main.py() and also `nvidia-smi` in another window on the same machine to look at GPU memory usage while executing the code. If you are not using all of your card's memory, increase the batch size until you are using nearly all of this. Batch size can be modified in the `src/config.py` file of this repo.
 
 
-### To-Do
 
