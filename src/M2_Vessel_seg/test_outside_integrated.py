@@ -20,7 +20,6 @@ from .utils import Define_image_size
 import torchvision
 from skimage.morphology import skeletonize,remove_small_objects
 from skimage import io
-from .FD_cal import fractal_dimension,vessel_density
 import shutil
 from pathlib import Path
 
@@ -29,43 +28,6 @@ def collate_fn(batch):
     # collates to remove none objects from the batch that failed during batch processing d/t corrupted images
     batch = list(filter(lambda x: x is not None, batch))
     return torch.utils.data.dataloader.default_collate(batch)
-
-
-def filter_frag(data_path):
-    if os.path.isdir(data_path + 'resize_binary/.ipynb_checkpoints'):
-        shutil.rmtree(data_path + 'resize_binary/.ipynb_checkpoints')
-
-    image_list=os.listdir(data_path + 'resize_binary')
-    FD_cal=[]
-    name_list=[]
-    VD_cal=[]
-    width_cal=[]
-
-    for i in sorted(image_list):
-        img=io.imread(data_path + 'resize_binary/' + i, as_gray=True).astype(np.int64)
-        img2=img>0
-        img2 = remove_small_objects(img2, 30, connectivity=5)
-        
-        if not os.path.isdir(data_path + 'binary_process/'):
-            os.makedirs(data_path + 'binary_process/') 
-        io.imsave(data_path + 'binary_process/' + i , 255*(img2.astype('uint8')),check_contrast=False)
-
-        skeleton = skeletonize(img2)
-        
-        if not os.path.isdir(data_path + 'binary_skeleton/'):
-            os.makedirs(data_path + 'binary_skeleton/') 
-        io.imsave(data_path + 'binary_skeleton/' + i, 255*(skeleton.astype('uint8')),check_contrast=False)
-        
-        FD_boxcounting = fractal_dimension(img2)
-        VD = vessel_density(img2)
-        width = np.sum(img2)/np.sum(skeleton)
-        FD_cal.append(FD_boxcounting)
-        name_list.append(i)
-        VD_cal.append(VD)
-        width_cal.append(width)
-    
-    return FD_cal,name_list,VD_cal,width_cal
-
 
 def segment_fundus(data_path, net_1, net_2, net_3, net_4, net_5, net_6, net_7, net_8, net_9, net_10, loader, device, dataset_name, job_name, mask_or, train_or):
 

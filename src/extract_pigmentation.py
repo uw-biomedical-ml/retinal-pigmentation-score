@@ -111,16 +111,11 @@ def get_pigmentation(config):
     """
 
     crop_csv = pd.read_csv(config.results_dir+ "M1/Good_quality/image_list.csv")
-    #vp = config.results_dir + "M2/binary_vessel/raw_binary/"
-    vp = config.results_dir + "M2/artery_vein/raw/"
+    vp = config.results_dir + "M2/binary_vessel/raw_binary/"
     dp = config.results_dir + "M2/optic_disc_cup/raw/"
     out_csv = config.results_dir  + 'retinal_background_lab_values.csv'
 
-    data = {'Name': [], 'L': [], 'a': [], 'b': [],
-            'L_std': [], 'a_std': [], 'b_std': [],
-            'L_d': [], 'a_d': [], 'b_d': [], 
-            'L_a': [], 'a_a': [], 'b_a': [], 
-            'L_v': [], 'a_v': [], 'b_v': []}
+    data = {'Name': [], 'L': [], 'a': [], 'b': []}
 
 
     for _,row in crop_csv.iterrows():
@@ -134,7 +129,7 @@ def get_pigmentation(config):
             masks = get_masks(vp+f, dp+f)
             inv_mask = get_inverted_masks(masks, np.array(im))
         except IOError:
-            log.warning("{} was not processsed, cannot get rps, chekc logs".format(im_pth))
+            log.warning("{} was not processsed, cannot get rps, check logs".format(im_pth))
         
         vals = rgb2lab(np.array(im)[inv_mask])
         med  = np.median(vals, axis=0)
@@ -142,29 +137,6 @@ def get_pigmentation(config):
         data['L'].append(med[0])
         data['a'].append(med[1])
         data['b'].append(med[2])
-
-        std = np.std(vals, axis=0)
-        data['L_std'].append(std[0])
-        data['a_std'].append(std[1])
-        data['b_std'].append(std[2])
-
-        # calculate ratio to cup
-        cup_adjusted = adjust_to_median(im, masks[3].astype(bool), med)
-        data['L_d'].append(cup_adjusted[0])
-        data['a_d'].append(cup_adjusted[1])
-        data['b_d'].append(cup_adjusted[2])
-
-        # calculate ratio to artery
-        artery_adjusted = adjust_to_median(im, masks[0].astype(bool), med)
-        data['L_a'].append(artery_adjusted[0])
-        data['a_a'].append(artery_adjusted[1])
-        data['b_a'].append(artery_adjusted[2])
-
-        # calculate ratio to veins
-        vein_adjusted = adjust_to_median(im, masks[1].astype(bool), med)
-        data['L_v'].append(artery_adjusted[0])
-        data['a_v'].append(artery_adjusted[1])
-        data['b_v'].append(artery_adjusted[2])
 
         if config.debug == True:
             

@@ -88,7 +88,7 @@ class RPS_normalizer():
         plt.suptitle("Representative median retinal background colors and their corresponding RPS", fontsize=24)
 
         plt.tight_layout()
-        plt.savefig('test.png')
+        plt.savefig('RPS_representative_images.png')
 
 RIPPER = RPS_normalizer("/data/anand/color_fundus/manuscript_code/EPIC_cohort_RPS.csv")
 RIPPER.fit()
