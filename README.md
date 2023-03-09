@@ -25,7 +25,7 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
   
   All color fundus photos need to be in a single directory and in png format.
 
-###*utput
+### Output
 
   All results will be dumped into a folder that you specify: *ie* `/data/arajesh/rps/results`
 
