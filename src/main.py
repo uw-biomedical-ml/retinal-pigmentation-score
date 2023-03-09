@@ -3,6 +3,7 @@ import M1_Retinal_Image_quality_EyePACS.test_outside as M1_EP
 import M1_Retinal_Image_quality_EyePACS.merge_quality_assessment as M1_QA
 import M2_Vessel_seg.test_outside_integrated as M2_VS
 import M2_lwnet_disc_cup.generate_av_results as M2_DC
+from fit_RPS_normalizer import RPS_normalizer
 import extract_pigmentation
 import config
 import logging
@@ -24,9 +25,19 @@ if __name__ == "__main__":
     M1_QA.quality_assessment(config)
 
     # deep learning disc and vessel segmentation
+    print('vesselseg')
     M2_VS.M2_vessel_seg(config)
+
+    print('dicsseg')
     M2_DC.M2_disc_cup(config)
 
     # extract retinal pigmentation score
     print("extracting pigmentation")
-    extract_pigmentation.get_pigmentation(config)
+    df = extract_pigmentation.get_pigmentation(config)
+
+    # fit RPS normalizer
+    rps_norm = RPS_normalizer(df)
+    rps_norm.fit()
+    rps_norm.transform()
+    rps_norm.save_example()
+

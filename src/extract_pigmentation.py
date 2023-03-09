@@ -35,7 +35,7 @@ def get_masks(vessel_path, disc_path):
         disc_path (str): path to disc
 
     Returns:
-        _type_: _description_
+        masks: masks
     """
 
     vessel = mpimage.imread(vessel_path)
@@ -106,8 +106,16 @@ def adjust_to_median(im, mask, med):
          
 
 def get_pigmentation(config):
-    """extracts the median color from the retinal background in the Lab space and
-    stores it as a csv
+    """takes the segmentation masks
+    inverts and dilates the masks
+    finds the median pixel value of retinal background
+    stores it in L,a,b colorspace
+
+    Args:
+        config (dict): config file with parameters
+
+    Returns:
+        df (pandas.dataframe): dataframe with the median L,a,b values for each image
     """
 
     crop_csv = pd.read_csv(config.results_dir+ "M1/Good_quality/image_list.csv")
@@ -151,5 +159,4 @@ def get_pigmentation(config):
             plt.savefig(config.results_dir+'debug/{}_debug.png'.format(f))
 
     df = pd.DataFrame.from_dict(data)
-    print('Lab color values are stored at {}'.format(out_csv))
-    df.to_csv(out_csv, index=False)
+    return df

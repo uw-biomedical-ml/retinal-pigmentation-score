@@ -5,6 +5,7 @@ from skimage.color import lab2rgb
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 import logging
+import config
 
 
 class RPS_normalizer():
@@ -12,12 +13,18 @@ class RPS_normalizer():
     which correspond to the RPS values
     """
 
-    def __init__(self, csv_pth: str) -> None:
+    def __init__(self, df: object) -> None:
+        """instanciation call
+
+        Args:
+            df (pandas.dataframe): dataframe to csv with l,a,b values
+        """
         
         log = logging.getLogger("RPS_normalizer")
         self.log = log
         self.n_comp = 2
-        self.df = pd.read_csv(csv_pth)
+        self.df = df
+        self.out_csv = config.results_dir + "retinal_pigmentation_score.csv"
 
     def fit(self) -> None:
         """fit a,b values to PCA model
@@ -40,13 +47,15 @@ class RPS_normalizer():
         """
 
         self.df['pigmentation'] = self.df[['a', 'b']].dropna().apply(lambda x: self.pca.transform([[x.a, x.b]])[0][0], axis=1)
+        self.df.to_csv(self.out_csv, index=False)
     
     def save_example(self) -> None:
         """saves a representatitve example of various RPS values with corresponding distribution plot of all RPS values. This
         can be used by people who want to see what the RPS value really represents from their dataset
         """
 
-        def plot_vals( idx, ax):
+        def plot_vals(idx, ax):
+            # allows to plot at a given ax object with required information from the df at a given index
 
             lab = self.df.loc[idx][['L', 'a', 'b']].values.tolist()
             rps = self.df.loc[idx].pigmentation
@@ -88,12 +97,7 @@ class RPS_normalizer():
         plt.suptitle("Representative median retinal background colors and their corresponding RPS", fontsize=24)
 
         plt.tight_layout()
-        plt.savefig('RPS_representative_images.png')
-
-RIPPER = RPS_normalizer("/data/anand/color_fundus/manuscript_code/EPIC_cohort_RPS.csv")
-RIPPER.fit()
-RIPPER.save_example()
-
+        plt.savefig(config.results_dir + 'RPS_representative_images.png')
 
 
 

@@ -21,6 +21,7 @@ from torch.utils.data import DataLoader
 from .model import Resnet101_fl, InceptionV3_fl, Densenet161_fl, Resnext101_32x8d_fl, MobilenetV2_fl, Vgg16_bn_fl, Efficientnet_fl
 from pathlib import Path
 
+log = logging.Logger("M1_test_outside")
 
 #torch.distributed.init_process_group(backend="nccl")
 font = {
@@ -205,27 +206,11 @@ def M1_image_quality(cfg):
     
     device = torch.device(cfg.device)
     
-    logging.info(f'Using device {device}')
+    log.info(f'Using device {device}')
 
     test_dir = args.test_dir
     dataset=args.dataset
     img_size= (512,512)
-
-    if args.model=='inceptionv3':
-        model_fl = InceptionV3_fl(pretrained=True)
-    if args.model=='densenet161':
-        model_fl = Densenet161_fl(pretrained=True)
-    if args.model == 'resnet101':   
-        model_fl = Resnet101_fl(pretrained=True)
-    if args.model == 'resnext101':   
-        model_fl_1 = Resnext101_32x8d_fl(pretrained=True)
-        model_fl_2 = Resnext101_32x8d_fl(pretrained=True)
-        model_fl_3 = Resnext101_32x8d_fl(pretrained=True)
-        model_fl_4 = Resnext101_32x8d_fl(pretrained=True)
-        model_fl_5 = Resnext101_32x8d_fl(pretrained=True)
-        model_fl_6 = Resnext101_32x8d_fl(pretrained=True)
-        model_fl_7 = Resnext101_32x8d_fl(pretrained=True)
-        model_fl_8 = Resnext101_32x8d_fl(pretrained=True)
     if args.model == 'efficientnet':   
         model_fl_1 = Efficientnet_fl(pretrained=True)
         model_fl_2 = Efficientnet_fl(pretrained=True)
@@ -235,10 +220,6 @@ def M1_image_quality(cfg):
         model_fl_6 = Efficientnet_fl(pretrained=True)
         model_fl_7 = Efficientnet_fl(pretrained=True)
         model_fl_8 = Efficientnet_fl(pretrained=True)
-    if args.model == 'mobilenetv2':   
-        model_fl = MobilenetV2_fl(pretrained=True)
-    if args.model == 'vgg16bn':   
-        model_fl = Vgg16_bn_fl(pretrained=True)
 
     model_fl_1.to(device=device)
     model_fl_2.to(device=device)
