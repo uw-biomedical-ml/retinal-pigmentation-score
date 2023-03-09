@@ -28,8 +28,8 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
 ### Output
     
   All results will be dumped into a folder that you specify: *ie* `/data/arajesh/rps/results`
-
-> The output will have multiple directories:
+  
+  The results directory will have the subsequent structure
 
     .
     |-- M0/ Pre-processing outputs
@@ -78,8 +78,4 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
 
 
 ### To-Do
-- [X] Modularize Automorph
-- [ ] Figure out minimum docker requirements for automorph
-- [X] Port the retinal pigmentation extraction code
-- [ ] Reduce the file size specifically removing the extra model state dicts that are stored for the models in automorph
 
