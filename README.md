@@ -71,19 +71,19 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
 
     `conda activate automorph`
     
-### Option 2 create your own environment
+### Option 2 (create your own environment)
 
 2b. Type the command 
 
-'conda create --name rps python=3.8'
+    'conda create --name rps python=3.8'
 
 followed by 
 
-'conda activate rps'
+    'conda activate rps'
 
 3b. Install requirements
 
-'pip install -r requirements.txt'
+    'pip install -r requirements.txt'
 
 
 # Execution Instructions
