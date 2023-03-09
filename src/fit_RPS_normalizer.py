@@ -73,11 +73,11 @@ class RPS_normalizer():
 
         indexes = self.df.pigmentation.sort_values().dropna().index
 
-        fig = plt.figure(figsize=(15,10))
+        fig = plt.figure(figsize=(20,10))
         gs = gridspec.GridSpec(2,4)
 
         ax0 = fig.add_subplot(gs[0,0])
-        plot_vals(indexes[5], ax0)
+        plot_vals(indexes[1], ax0)
 
         ax1 = fig.add_subplot(gs[0,1])
         plot_vals(indexes[int(len(indexes) * 1/3 )], ax1)
@@ -86,7 +86,7 @@ class RPS_normalizer():
         plot_vals(indexes[int( len(indexes) * 2/3)], ax2)
 
         ax3 = fig.add_subplot(gs[0,3])
-        plot_vals(indexes[-5], ax3)
+        plot_vals(indexes[-2], ax3)
 
         ax4 = fig.add_subplot(gs[1,:])
         ax4.hist(self.df['pigmentation'])
@@ -99,5 +99,6 @@ class RPS_normalizer():
         plt.tight_layout()
         plt.savefig(config.results_dir + 'RPS_representative_images.png')
 
-
-
+#df = pd.read_csv("/data/anand/color_fundus/manuscript_code/EPIC_cohort_RPS.csv")
+#RIPPER = RPS_normalizer(df)
+#RIPPER.save_example()
