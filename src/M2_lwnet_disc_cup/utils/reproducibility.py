@@ -2,6 +2,7 @@ import numpy as np
 import random
 import torch
 
+
 def set_seeds(seed_value, use_cuda):
     np.random.seed(seed_value)  # cpu vars
     torch.manual_seed(seed_value)  # cpu  vars

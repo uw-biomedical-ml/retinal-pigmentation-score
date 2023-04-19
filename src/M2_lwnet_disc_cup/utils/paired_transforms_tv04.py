@@ -4,6 +4,7 @@ import math
 import sys
 import random
 from PIL import Image
+
 try:
     import accimage
 except ImportError:
@@ -18,7 +19,10 @@ from torchvision.transforms import functional as F
 
 import pkg_resources
 import distutils.version
-TORCHVISION_VERSION = distutils.version.LooseVersion(pkg_resources.require('torchvision')[0].version)
+
+TORCHVISION_VERSION = distutils.version.LooseVersion(
+    pkg_resources.require("torchvision")[0].version
+)
 
 if sys.version_info < (3, 3):
     Sequence = collections.Sequence
@@ -27,20 +31,45 @@ else:
     Sequence = collections.abc.Sequence
     Iterable = collections.abc.Iterable
 
-__all__ = ["Compose", "ToTensor", "ToPILImage", "Normalize", "Resize", "Scale", "CenterCrop", "Pad",
-           "Lambda", "RandomApply", "RandomChoice", "RandomOrder", "RandomCrop", "RandomHorizontalFlip",
-           "RandomVerticalFlip", "RandomResizedCrop", "RandomSizedCrop", "FiveCrop", "TenCrop", "LinearTransformation",
-           "ColorJitter", "RandomRotation", "RandomAffine", "Grayscale", "RandomGrayscale",
-           "RandomPerspective", "RandomErasing"]
+__all__ = [
+    "Compose",
+    "ToTensor",
+    "ToPILImage",
+    "Normalize",
+    "Resize",
+    "Scale",
+    "CenterCrop",
+    "Pad",
+    "Lambda",
+    "RandomApply",
+    "RandomChoice",
+    "RandomOrder",
+    "RandomCrop",
+    "RandomHorizontalFlip",
+    "RandomVerticalFlip",
+    "RandomResizedCrop",
+    "RandomSizedCrop",
+    "FiveCrop",
+    "TenCrop",
+    "LinearTransformation",
+    "ColorJitter",
+    "RandomRotation",
+    "RandomAffine",
+    "Grayscale",
+    "RandomGrayscale",
+    "RandomPerspective",
+    "RandomErasing",
+]
 
 _pil_interpolation_to_str = {
-    Image.NEAREST: 'PIL.Image.NEAREST',
-    Image.BILINEAR: 'PIL.Image.BILINEAR',
-    Image.BICUBIC: 'PIL.Image.BICUBIC',
-    Image.LANCZOS: 'PIL.Image.LANCZOS',
-    Image.HAMMING: 'PIL.Image.HAMMING',
-    Image.BOX: 'PIL.Image.BOX',
+    Image.NEAREST: "PIL.Image.NEAREST",
+    Image.BILINEAR: "PIL.Image.BILINEAR",
+    Image.BICUBIC: "PIL.Image.BICUBIC",
+    Image.LANCZOS: "PIL.Image.LANCZOS",
+    Image.HAMMING: "PIL.Image.HAMMING",
+    Image.BOX: "PIL.Image.BOX",
 }
+
 
 def _get_image_size(img):
     if F._is_pil_image(img):
@@ -49,6 +78,7 @@ def _get_image_size(img):
         return img.shape[-2:][::-1]
     else:
         raise TypeError("Unexpected type {}".format(type(img)))
+
 
 class Compose(object):
     """Composes several transforms together. Generalized to apply each transform
@@ -67,7 +97,7 @@ class Compose(object):
     def __init__(self, transforms):
         self.transforms = transforms
 
-    def __call__(self, img, target = None):
+    def __call__(self, img, target=None):
         if target is not None:
             for t in self.transforms:
                 img, target = t(img, target)
@@ -78,11 +108,11 @@ class Compose(object):
         return img
 
     def __repr__(self):
-        format_string = self.__class__.__name__ + '('
+        format_string = self.__class__.__name__ + "("
         for t in self.transforms:
-            format_string += '\n'
-            format_string += '    {0}'.format(t)
-        format_string += '\n)'
+            format_string += "\n"
+            format_string += "    {0}".format(t)
+        format_string += "\n)"
         return format_string
 
 
@@ -128,7 +158,7 @@ class ToTensor(object):
         return F.to_tensor(pic)
 
     def __repr__(self):
-        return self.__class__.__name__ + '()'
+        return self.__class__.__name__ + "()"
 
 
 class ToPILImage(object):
@@ -149,6 +179,7 @@ class ToPILImage(object):
 
     .. _PIL.Image mode: https://pillow.readthedocs.io/en/latest/handbook/concepts.html#concept-modes
     """
+
     def __init__(self, mode=None):
         self.mode = mode
 
@@ -167,10 +198,10 @@ class ToPILImage(object):
         return F.to_pil_image(pic, self.mode)
 
     def __repr__(self):
-        format_string = self.__class__.__name__ + '('
+        format_string = self.__class__.__name__ + "("
         if self.mode is not None:
-            format_string += 'mode={0}'.format(self.mode)
-        format_string += ')'
+            format_string += "mode={0}".format(self.mode)
+        format_string += ")"
         return format_string
 
 
@@ -212,7 +243,9 @@ class Normalize(object):
         return F.normalize(tensor, self.mean, self.std)
 
     def __repr__(self):
-        return self.__class__.__name__ + '(mean={0}, std={1})'.format(self.mean, self.std)
+        return self.__class__.__name__ + "(mean={0}, std={1})".format(
+            self.mean, self.std
+        )
 
 
 class Resize(object):
@@ -230,7 +263,9 @@ class Resize(object):
             ``PIL.Image.NEAREST``
     """
 
-    def __init__(self, size, interpolation=Image.BILINEAR, interpolation_tg = Image.NEAREST):
+    def __init__(
+        self, size, interpolation=Image.BILINEAR, interpolation_tg=Image.NEAREST
+    ):
         assert isinstance(size, int) or (isinstance(size, Iterable) and len(size) == 2)
         self.size = size
         self.interpolation = interpolation
@@ -246,22 +281,28 @@ class Resize(object):
             PIL Image: Rescaled image(s).
         """
         if target is not None:
-            return F.resize(img, self.size, self.interpolation), \
-                   F.resize(target, self.size, self.interpolation_tg)
+            return F.resize(img, self.size, self.interpolation), F.resize(
+                target, self.size, self.interpolation_tg
+            )
         return F.resize(img, self.size, self.interpolation)
 
     def __repr__(self):
         interpolate_str = _pil_interpolation_to_str[self.interpolation]
-        return self.__class__.__name__ + '(size={0}, interpolation={1})'.format(self.size, interpolate_str)
+        return self.__class__.__name__ + "(size={0}, interpolation={1})".format(
+            self.size, interpolate_str
+        )
 
 
 class Scale(Resize):
     """
     Note: This transform is deprecated in favor of Resize.
     """
+
     def __init__(self, *args, **kwargs):
-        warnings.warn("The use of the transforms.Scale transform is deprecated, " +
-                      "please use transforms.Resize instead.")
+        warnings.warn(
+            "The use of the transforms.Scale transform is deprecated, "
+            + "please use transforms.Resize instead."
+        )
         super(Scale, self).__init__(*args, **kwargs)
 
 
@@ -294,7 +335,7 @@ class CenterCrop(object):
         return F.center_crop(img, self.size)
 
     def __repr__(self):
-        return self.__class__.__name__ + '(size={0})'.format(self.size)
+        return self.__class__.__name__ + "(size={0})".format(self.size)
 
 
 class Pad(object):
@@ -328,13 +369,15 @@ class Pad(object):
                 will result in [2, 1, 1, 2, 3, 4, 4, 3]
     """
 
-    def __init__(self, padding, fill=0, padding_mode='constant'):
+    def __init__(self, padding, fill=0, padding_mode="constant"):
         assert isinstance(padding, (numbers.Number, tuple))
         assert isinstance(fill, (numbers.Number, str, tuple))
-        assert padding_mode in ['constant', 'edge', 'reflect', 'symmetric']
+        assert padding_mode in ["constant", "edge", "reflect", "symmetric"]
         if isinstance(padding, Sequence) and len(padding) not in [2, 4]:
-            raise ValueError("Padding must be an int or a 2, or 4 element tuple, not a " +
-                             "{} element tuple".format(len(padding)))
+            raise ValueError(
+                "Padding must be an int or a 2, or 4 element tuple, not a "
+                + "{} element tuple".format(len(padding))
+            )
 
         self.padding = padding
         self.fill = fill
@@ -350,13 +393,18 @@ class Pad(object):
             PIL Image(s): Padded image(s).
         """
         if target is not None:
-            return F.pad(img, self.padding, self.fill, self.padding_mode), \
-                   F.pad(target, self.padding, self.fill, self.padding_mode)
+            return F.pad(img, self.padding, self.fill, self.padding_mode), F.pad(
+                target, self.padding, self.fill, self.padding_mode
+            )
         return F.pad(img, self.padding, self.fill, self.padding_mode)
 
     def __repr__(self):
-        return self.__class__.__name__ + '(padding={0}, fill={1}, padding_mode={2})'.\
-            format(self.padding, self.fill, self.padding_mode)
+        return (
+            self.__class__.__name__
+            + "(padding={0}, fill={1}, padding_mode={2})".format(
+                self.padding, self.fill, self.padding_mode
+            )
+        )
 
 
 class Lambda(object):
@@ -376,7 +424,7 @@ class Lambda(object):
         return self.lambd(img)
 
     def __repr__(self):
-        return self.__class__.__name__ + '()'
+        return self.__class__.__name__ + "()"
 
 
 class RandomTransforms(object):
@@ -394,11 +442,11 @@ class RandomTransforms(object):
         raise NotImplementedError()
 
     def __repr__(self):
-        format_string = self.__class__.__name__ + '('
+        format_string = self.__class__.__name__ + "("
         for t in self.transforms:
-            format_string += '\n'
-            format_string += '    {0}'.format(t)
-        format_string += '\n)'
+            format_string += "\n"
+            format_string += "    {0}".format(t)
+        format_string += "\n)"
         return format_string
 
 
@@ -429,18 +477,18 @@ class RandomApply(RandomTransforms):
         return img
 
     def __repr__(self):
-        format_string = self.__class__.__name__ + '('
-        format_string += '\n    p={}'.format(self.p)
+        format_string = self.__class__.__name__ + "("
+        format_string += "\n    p={}".format(self.p)
         for t in self.transforms:
-            format_string += '\n'
-            format_string += '    {0}'.format(t)
-        format_string += '\n)'
+            format_string += "\n"
+            format_string += "    {0}".format(t)
+        format_string += "\n)"
         return format_string
 
 
 class RandomOrder(RandomTransforms):
-    """Apply a list of transformations in a random order
-    """
+    """Apply a list of transformations in a random order"""
+
     def __call__(self, img, target=None):
         order = list(range(len(self.transforms)))
         random.shuffle(order)
@@ -455,8 +503,8 @@ class RandomOrder(RandomTransforms):
 
 
 class RandomChoice(RandomTransforms):
-    """Apply single transformation randomly picked from a list
-    """
+    """Apply single transformation randomly picked from a list"""
+
     def __call__(self, img, target=None):
         t = random.choice(self.transforms)
         if target is not None:
@@ -500,7 +548,9 @@ class RandomCrop(object):
 
     """
 
-    def __init__(self, size, padding=None, pad_if_needed=False, fill=0, padding_mode='constant'):
+    def __init__(
+        self, size, padding=None, pad_if_needed=False, fill=0, padding_mode="constant"
+    ):
         if isinstance(size, numbers.Number):
             self.size = (int(size), int(size))
         else:
@@ -530,7 +580,7 @@ class RandomCrop(object):
         j = random.randint(0, w - tw)
         return i, j, th, tw
 
-    def __call__(self, img, target = None):
+    def __call__(self, img, target=None):
         """
         Args:
             img (PIL Image): Image to be cropped.
@@ -546,14 +596,28 @@ class RandomCrop(object):
 
         # pad the width if needed
         if self.pad_if_needed and img.size[0] < self.size[1]:
-            img = F.pad(img, (self.size[1] - img.size[0], 0), self.fill, self.padding_mode)
+            img = F.pad(
+                img, (self.size[1] - img.size[0], 0), self.fill, self.padding_mode
+            )
             if target is not None:
-                target = F.pad(target, (self.size[1] - target.size[0], 0), self.fill, self.padding_mode)
+                target = F.pad(
+                    target,
+                    (self.size[1] - target.size[0], 0),
+                    self.fill,
+                    self.padding_mode,
+                )
         # pad the height if needed
         if self.pad_if_needed and img.size[1] < self.size[0]:
-            img = F.pad(img, (0, self.size[0] - img.size[1]), self.fill, self.padding_mode)
+            img = F.pad(
+                img, (0, self.size[0] - img.size[1]), self.fill, self.padding_mode
+            )
             if target is not None:
-                target = F.pad(target , (0, self.size[0] - target .size[1]), self.fill, self.padding_mode)
+                target = F.pad(
+                    target,
+                    (0, self.size[0] - target.size[1]),
+                    self.fill,
+                    self.padding_mode,
+                )
         i, j, h, w = self.get_params(img, self.size)
 
         if target is not None:
@@ -561,7 +625,9 @@ class RandomCrop(object):
         return F.crop(img, i, j, h, w)
 
     def __repr__(self):
-        return self.__class__.__name__ + '(size={0}, padding={1})'.format(self.size, self.padding)
+        return self.__class__.__name__ + "(size={0}, padding={1})".format(
+            self.size, self.padding
+        )
 
 
 class RandomHorizontalFlip(object):
@@ -594,7 +660,7 @@ class RandomHorizontalFlip(object):
         return img
 
     def __repr__(self):
-        return self.__class__.__name__ + '(p={})'.format(self.p)
+        return self.__class__.__name__ + "(p={})".format(self.p)
 
 
 class RandomVerticalFlip(object):
@@ -627,7 +693,7 @@ class RandomVerticalFlip(object):
         return img
 
     def __repr__(self):
-        return self.__class__.__name__ + '(p={})'.format(self.p)
+        return self.__class__.__name__ + "(p={})".format(self.p)
 
 
 class RandomPerspective(object):
@@ -644,14 +710,19 @@ class RandomPerspective(object):
 
     """
 
-    def __init__(self, distortion_scale=0.5, p=0.5,
-                 interpolation=Image.BICUBIC, interpolation_tg = Image.NEAREST):
+    def __init__(
+        self,
+        distortion_scale=0.5,
+        p=0.5,
+        interpolation=Image.BICUBIC,
+        interpolation_tg=Image.NEAREST,
+    ):
         self.p = p
         self.interpolation = interpolation
         self.interpolation_tg = interpolation_tg
         self.distortion_scale = distortion_scale
 
-    def __call__(self, img, target = None):
+    def __call__(self, img, target=None):
         """
         Args:
             img (PIL Image): Image to be Perspectively transformed.
@@ -661,14 +732,17 @@ class RandomPerspective(object):
             PIL Image(s): Random perspectivley transformed image(s).
         """
         if not F._is_pil_image(img):
-            raise TypeError('img should be PIL Image. Got {}'.format(type(img)))
+            raise TypeError("img should be PIL Image. Got {}".format(type(img)))
 
         if random.random() < self.p:
             width, height = img.size
-            startpoints, endpoints = self.get_params(width, height, self.distortion_scale)
+            startpoints, endpoints = self.get_params(
+                width, height, self.distortion_scale
+            )
             if target is not None:
-                return F.perspective(img, startpoints, endpoints, self.interpolation), \
-                       F.perspective(target, startpoints, endpoints, self.interpolation_tg)
+                return F.perspective(
+                    img, startpoints, endpoints, self.interpolation
+                ), F.perspective(target, startpoints, endpoints, self.interpolation_tg)
             return F.perspective(img, startpoints, endpoints, self.interpolation)
         if target is not None:
             return img, target
@@ -688,20 +762,32 @@ class RandomPerspective(object):
         """
         half_height = int(height / 2)
         half_width = int(width / 2)
-        topleft = (random.randint(0, int(distortion_scale * half_width)),
-                   random.randint(0, int(distortion_scale * half_height)))
-        topright = (random.randint(width - int(distortion_scale * half_width) - 1, width - 1),
-                    random.randint(0, int(distortion_scale * half_height)))
-        botright = (random.randint(width - int(distortion_scale * half_width) - 1, width - 1),
-                    random.randint(height - int(distortion_scale * half_height) - 1, height - 1))
-        botleft = (random.randint(0, int(distortion_scale * half_width)),
-                   random.randint(height - int(distortion_scale * half_height) - 1, height - 1))
+        topleft = (
+            random.randint(0, int(distortion_scale * half_width)),
+            random.randint(0, int(distortion_scale * half_height)),
+        )
+        topright = (
+            random.randint(width - int(distortion_scale * half_width) - 1, width - 1),
+            random.randint(0, int(distortion_scale * half_height)),
+        )
+        botright = (
+            random.randint(width - int(distortion_scale * half_width) - 1, width - 1),
+            random.randint(
+                height - int(distortion_scale * half_height) - 1, height - 1
+            ),
+        )
+        botleft = (
+            random.randint(0, int(distortion_scale * half_width)),
+            random.randint(
+                height - int(distortion_scale * half_height) - 1, height - 1
+            ),
+        )
         startpoints = [(0, 0), (width - 1, 0), (width - 1, height - 1), (0, height - 1)]
         endpoints = [topleft, topright, botright, botleft]
         return startpoints, endpoints
 
     def __repr__(self):
-        return self.__class__.__name__ + '(p={})'.format(self.p)
+        return self.__class__.__name__ + "(p={})".format(self.p)
 
 
 class RandomResizedCrop(object):
@@ -720,8 +806,14 @@ class RandomResizedCrop(object):
         interpolation_tg : Default- Image.NEAREST
     """
 
-    def __init__(self, size, scale=(0.08, 1.0), ratio=(3. / 4., 4. / 3.),
-                 interpolation=Image.BILINEAR, interpolation_tg = Image.NEAREST):
+    def __init__(
+        self,
+        size,
+        scale=(0.08, 1.0),
+        ratio=(3.0 / 4.0, 4.0 / 3.0),
+        interpolation=Image.BILINEAR,
+        interpolation_tg=Image.NEAREST,
+    ):
         if isinstance(size, tuple):
             self.size = size
         else:
@@ -765,10 +857,10 @@ class RandomResizedCrop(object):
 
         # Fallback to central crop
         in_ratio = float(width) / float(height)
-        if (in_ratio < min(ratio)):
+        if in_ratio < min(ratio):
             w = width
             h = int(round(w / min(ratio)))
-        elif (in_ratio > max(ratio)):
+        elif in_ratio > max(ratio):
             h = height
             w = int(round(h * max(ratio)))
         else:  # whole image
@@ -778,7 +870,7 @@ class RandomResizedCrop(object):
         j = (width - w) // 2
         return i, j, h, w
 
-    def __call__(self, img, target = None):
+    def __call__(self, img, target=None):
         """
         Args:
             img (PIL Image): Image to be cropped and resized.
@@ -789,16 +881,17 @@ class RandomResizedCrop(object):
         """
         i, j, h, w = self.get_params(img, self.scale, self.ratio)
         if target is not None:
-            return F.resized_crop(img, i, j, h, w, self.size, self.interpolation), \
-                   F.resized_crop(target, i, j, h, w, self.size, self.interpolation_tg)
+            return F.resized_crop(
+                img, i, j, h, w, self.size, self.interpolation
+            ), F.resized_crop(target, i, j, h, w, self.size, self.interpolation_tg)
         return F.resized_crop(img, i, j, h, w, self.size, self.interpolation)
 
     def __repr__(self):
         interpolate_str = _pil_interpolation_to_str[self.interpolation]
-        format_string = self.__class__.__name__ + '(size={0}'.format(self.size)
-        format_string += ', scale={0}'.format(tuple(round(s, 4) for s in self.scale))
-        format_string += ', ratio={0}'.format(tuple(round(r, 4) for r in self.ratio))
-        format_string += ', interpolation={0})'.format(interpolate_str)
+        format_string = self.__class__.__name__ + "(size={0}".format(self.size)
+        format_string += ", scale={0}".format(tuple(round(s, 4) for s in self.scale))
+        format_string += ", ratio={0}".format(tuple(round(r, 4) for r in self.ratio))
+        format_string += ", interpolation={0})".format(interpolate_str)
         return format_string
 
 
@@ -806,9 +899,12 @@ class RandomSizedCrop(RandomResizedCrop):
     """
     Note: This transform is deprecated in favor of RandomResizedCrop.
     """
+
     def __init__(self, *args, **kwargs):
-        warnings.warn("The use of the transforms.RandomSizedCrop transform is deprecated, " +
-                      "please use transforms.RandomResizedCrop instead.")
+        warnings.warn(
+            "The use of the transforms.RandomSizedCrop transform is deprecated, "
+            + "please use transforms.RandomResizedCrop instead."
+        )
         super(RandomSizedCrop, self).__init__(*args, **kwargs)
 
 
@@ -850,7 +946,7 @@ class FiveCrop(object):
         return F.five_crop(img, self.size)
 
     def __repr__(self):
-        return self.__class__.__name__ + '(size={0})'.format(self.size)
+        return self.__class__.__name__ + "(size={0})".format(self.size)
 
 
 class TenCrop(object):
@@ -889,13 +985,15 @@ class TenCrop(object):
             self.size = size
         self.vertical_flip = vertical_flip
 
-    def __call__(self, img, target = None):
+    def __call__(self, img, target=None):
         if target is not None:
             return F.ten_crop(img, self.size), F.ten_crop(target, self.size)
         return F.ten_crop(img, self.size, self.vertical_flip)
 
     def __repr__(self):
-        return self.__class__.__name__ + '(size={0}, vertical_flip={1})'.format(self.size, self.vertical_flip)
+        return self.__class__.__name__ + "(size={0}, vertical_flip={1})".format(
+            self.size, self.vertical_flip
+        )
 
 
 class LinearTransformation(object):
@@ -917,13 +1015,18 @@ class LinearTransformation(object):
 
     def __init__(self, transformation_matrix, mean_vector):
         if transformation_matrix.size(0) != transformation_matrix.size(1):
-            raise ValueError("transformation_matrix should be square. Got " +
-                             "[{} x {}] rectangular matrix.".format(*transformation_matrix.size()))
+            raise ValueError(
+                "transformation_matrix should be square. Got "
+                + "[{} x {}] rectangular matrix.".format(*transformation_matrix.size())
+            )
 
         if mean_vector.size(0) != transformation_matrix.size(0):
-            raise ValueError("mean_vector should have the same length {}".format(mean_vector.size(0)) +
-                             " as any one of the dimensions of the transformation_matrix [{} x {}]"
-                             .format(transformation_matrix.size()))
+            raise ValueError(
+                "mean_vector should have the same length {}".format(mean_vector.size(0))
+                + " as any one of the dimensions of the transformation_matrix [{} x {}]".format(
+                    transformation_matrix.size()
+                )
+            )
 
         self.transformation_matrix = transformation_matrix
         self.mean_vector = mean_vector
@@ -936,10 +1039,14 @@ class LinearTransformation(object):
         Returns:
             Tensor(s): Transformed image(s).
         """
-        if tensor.size(0) * tensor.size(1) * tensor.size(2) != self.transformation_matrix.size(0):
-            raise ValueError("tensor and transformation matrix have incompatible shape." +
-                             "[{} x {} x {}] != ".format(*tensor.size()) +
-                             "{}".format(self.transformation_matrix.size(0)))
+        if tensor.size(0) * tensor.size(1) * tensor.size(
+            2
+        ) != self.transformation_matrix.size(0):
+            raise ValueError(
+                "tensor and transformation matrix have incompatible shape."
+                + "[{} x {} x {}] != ".format(*tensor.size())
+                + "{}".format(self.transformation_matrix.size(0))
+            )
         flat_tensor = tensor.view(1, -1) - self.mean_vector
         transformed_tensor = torch.mm(flat_tensor, self.transformation_matrix)
         tensor = transformed_tensor.view(tensor.size())
@@ -948,8 +1055,8 @@ class LinearTransformation(object):
         return tensor
 
     def __repr__(self):
-        format_string = self.__class__.__name__ + '('
-        format_string += (str(self.transformation_matrix.numpy().tolist()) + ')')
+        format_string = self.__class__.__name__ + "("
+        format_string += str(self.transformation_matrix.numpy().tolist()) + ")"
         return format_string
 
 
@@ -970,17 +1077,23 @@ class ColorJitter(object):
             hue_factor is chosen uniformly from [-hue, hue] or the given [min, max].
             Should have 0<= hue <= 0.5 or -0.5 <= min <= max <= 0.5.
     """
-    def __init__(self, brightness=0, contrast=0, saturation=0, hue=0):
-        self.brightness = self._check_input(brightness, 'brightness')
-        self.contrast = self._check_input(contrast, 'contrast')
-        self.saturation = self._check_input(saturation, 'saturation')
-        self.hue = self._check_input(hue, 'hue', center=0, bound=(-0.5, 0.5),
-                                     clip_first_on_zero=False)
 
-    def _check_input(self, value, name, center=1, bound=(0, float('inf')), clip_first_on_zero=True):
+    def __init__(self, brightness=0, contrast=0, saturation=0, hue=0):
+        self.brightness = self._check_input(brightness, "brightness")
+        self.contrast = self._check_input(contrast, "contrast")
+        self.saturation = self._check_input(saturation, "saturation")
+        self.hue = self._check_input(
+            hue, "hue", center=0, bound=(-0.5, 0.5), clip_first_on_zero=False
+        )
+
+    def _check_input(
+        self, value, name, center=1, bound=(0, float("inf")), clip_first_on_zero=True
+    ):
         if isinstance(value, numbers.Number):
             if value < 0:
-                raise ValueError("If {} is a single number, it must be non negative.".format(name))
+                raise ValueError(
+                    "If {} is a single number, it must be non negative.".format(name)
+                )
             value = [center - value, center + value]
             if clip_first_on_zero:
                 value[0] = max(value[0], 0)
@@ -988,7 +1101,11 @@ class ColorJitter(object):
             if not bound[0] <= value[0] <= value[1] <= bound[1]:
                 raise ValueError("{} values should be between {}".format(name, bound))
         else:
-            raise TypeError("{} should be a single number or a list/tuple with lenght 2.".format(name))
+            raise TypeError(
+                "{} should be a single number or a list/tuple with lenght 2.".format(
+                    name
+                )
+            )
 
         # if value is 0 or (1., 1.) for brightness/contrast/saturation
         # or (0., 0.) for hue, do nothing
@@ -1010,15 +1127,21 @@ class ColorJitter(object):
 
         if brightness is not None:
             brightness_factor = random.uniform(brightness[0], brightness[1])
-            transforms.append(Lambda(lambda img: F.adjust_brightness(img, brightness_factor)))
+            transforms.append(
+                Lambda(lambda img: F.adjust_brightness(img, brightness_factor))
+            )
 
         if contrast is not None:
             contrast_factor = random.uniform(contrast[0], contrast[1])
-            transforms.append(Lambda(lambda img: F.adjust_contrast(img, contrast_factor)))
+            transforms.append(
+                Lambda(lambda img: F.adjust_contrast(img, contrast_factor))
+            )
 
         if saturation is not None:
             saturation_factor = random.uniform(saturation[0], saturation[1])
-            transforms.append(Lambda(lambda img: F.adjust_saturation(img, saturation_factor)))
+            transforms.append(
+                Lambda(lambda img: F.adjust_saturation(img, saturation_factor))
+            )
 
         if hue is not None:
             hue_factor = random.uniform(hue[0], hue[1])
@@ -1029,7 +1152,7 @@ class ColorJitter(object):
 
         return transform
 
-    def __call__(self, img, target = None):
+    def __call__(self, img, target=None):
         """
         Args:
             img (PIL Image): Input image.
@@ -1038,19 +1161,20 @@ class ColorJitter(object):
         Returns:
             PIL Image(s): Color jittered image (and second unmodified image).
         """
-        transform = self.get_params(self.brightness, self.contrast,
-                                    self.saturation, self.hue)
+        transform = self.get_params(
+            self.brightness, self.contrast, self.saturation, self.hue
+        )
 
         if target is not None:
             return transform(img), target
         return transform(img)
 
     def __repr__(self):
-        format_string = self.__class__.__name__ + '('
-        format_string += 'brightness={0}'.format(self.brightness)
-        format_string += ', contrast={0}'.format(self.contrast)
-        format_string += ', saturation={0}'.format(self.saturation)
-        format_string += ', hue={0})'.format(self.hue)
+        format_string = self.__class__.__name__ + "("
+        format_string += "brightness={0}".format(self.brightness)
+        format_string += ", contrast={0}".format(self.contrast)
+        format_string += ", saturation={0}".format(self.saturation)
+        format_string += ", hue={0})".format(self.hue)
         return format_string
 
 
@@ -1078,7 +1202,16 @@ class RandomRotation(object):
 
     """
 
-    def __init__(self, degrees, resample=False, resample_tg=False, expand=False, center=None, fill=0, fill_tg=(0,)): #
+    def __init__(
+        self,
+        degrees,
+        resample=False,
+        resample_tg=False,
+        expand=False,
+        center=None,
+        fill=0,
+        fill_tg=(0,),
+    ):  #
         if isinstance(degrees, numbers.Number):
             if degrees < 0:
                 raise ValueError("If degrees is a single number, it must be positive.")
@@ -1120,25 +1253,38 @@ class RandomRotation(object):
         if TORCHVISION_VERSION <= distutils.version.LooseVersion("0.4.2"):
             # the "fill" argument was only introduced in torchvision==0.5.0
             if target is not None:
-                return F.rotate(img, angle, self.resample, self.expand, self.center), \
-                       F.rotate(target, angle, self.resample_tg, self.expand, self.center) #
-                       # resample = False is by default nearest, appropriate for targets
+                return F.rotate(
+                    img, angle, self.resample, self.expand, self.center
+                ), F.rotate(
+                    target, angle, self.resample_tg, self.expand, self.center
+                )  #
+                # resample = False is by default nearest, appropriate for targets
             return F.rotate(img, angle, self.resample, self.expand, self.center)
 
         else:
             if target is not None:
-                return F.rotate(img, angle, self.resample, self.expand, self.center, self.fill), \
-                       F.rotate(target, angle, self.resample_tg, self.expand, self.center, self.fill_tg) #
-                       # resample = False is by default nearest, appropriate for targets
-            return F.rotate(img, angle, self.resample, self.expand, self.center, self.fill_tg)
+                return F.rotate(
+                    img, angle, self.resample, self.expand, self.center, self.fill
+                ), F.rotate(
+                    target,
+                    angle,
+                    self.resample_tg,
+                    self.expand,
+                    self.center,
+                    self.fill_tg,
+                )  #
+                # resample = False is by default nearest, appropriate for targets
+            return F.rotate(
+                img, angle, self.resample, self.expand, self.center, self.fill_tg
+            )
 
     def __repr__(self):
-        format_string = self.__class__.__name__ + '(degrees={0}'.format(self.degrees)
-        format_string += ', resample={0}'.format(self.resample)
-        format_string += ', expand={0}'.format(self.expand)
+        format_string = self.__class__.__name__ + "(degrees={0}".format(self.degrees)
+        format_string += ", resample={0}".format(self.resample)
+        format_string += ", expand={0}".format(self.expand)
         if self.center is not None:
-            format_string += ', center={0}'.format(self.center)
-        format_string += ')'
+            format_string += ", center={0}".format(self.center)
+        format_string += ")"
         return format_string
 
 
@@ -1171,28 +1317,39 @@ class RandomAffine(object):
 
     """
 
-    def __init__(self, degrees, translate=None, scale=None, shear=None,
-                 resample=False, resample_tg=False, fillcolor=0):
+    def __init__(
+        self,
+        degrees,
+        translate=None,
+        scale=None,
+        shear=None,
+        resample=False,
+        resample_tg=False,
+        fillcolor=0,
+    ):
         if isinstance(degrees, numbers.Number):
             if degrees < 0:
                 raise ValueError("If degrees is a single number, it must be positive.")
             self.degrees = (-degrees, degrees)
         else:
-            assert isinstance(degrees, (tuple, list)) and len(degrees) == 2, \
-                "degrees should be a list or tuple and it must be of length 2."
+            assert (
+                isinstance(degrees, (tuple, list)) and len(degrees) == 2
+            ), "degrees should be a list or tuple and it must be of length 2."
             self.degrees = degrees
 
         if translate is not None:
-            assert isinstance(translate, (tuple, list)) and len(translate) == 2, \
-                "translate should be a list or tuple and it must be of length 2."
+            assert (
+                isinstance(translate, (tuple, list)) and len(translate) == 2
+            ), "translate should be a list or tuple and it must be of length 2."
             for t in translate:
                 if not (0.0 <= t <= 1.0):
                     raise ValueError("translation values should be between 0 and 1")
         self.translate = translate
 
         if scale is not None:
-            assert isinstance(scale, (tuple, list)) and len(scale) == 2, \
-                "scale should be a list or tuple and it must be of length 2."
+            assert (
+                isinstance(scale, (tuple, list)) and len(scale) == 2
+            ), "scale should be a list or tuple and it must be of length 2."
             for s in scale:
                 if s <= 0:
                     raise ValueError("scale values should be positive")
@@ -1201,15 +1358,17 @@ class RandomAffine(object):
         if shear is not None:
             if isinstance(shear, numbers.Number):
                 if shear < 0:
-                    raise ValueError("If shear is a single number, it must be positive.")
+                    raise ValueError(
+                        "If shear is a single number, it must be positive."
+                    )
                 self.shear = (-shear, shear)
             else:
-                assert isinstance(shear, (tuple, list)) and \
-                    (len(shear) == 2 or len(shear) == 4), \
-                    "shear should be a list or tuple and it must be of length 2 or 4."
+                assert isinstance(shear, (tuple, list)) and (
+                    len(shear) == 2 or len(shear) == 4
+                ), "shear should be a list or tuple and it must be of length 2 or 4."
                 # X-Axis shear with [min, max]
                 if len(shear) == 2:
-                    self.shear = [shear[0], shear[1], 0., 0.]
+                    self.shear = [shear[0], shear[1], 0.0, 0.0]
                 elif len(shear) == 4:
                     self.shear = [s for s in shear]
         else:
@@ -1230,8 +1389,10 @@ class RandomAffine(object):
         if translate is not None:
             max_dx = translate[0] * img_size[0]
             max_dy = translate[1] * img_size[1]
-            translations = (np.round(random.uniform(-max_dx, max_dx)),
-                            np.round(random.uniform(-max_dy, max_dy)))
+            translations = (
+                np.round(random.uniform(-max_dx, max_dx)),
+                np.round(random.uniform(-max_dy, max_dy)),
+            )
         else:
             translations = (0, 0)
 
@@ -1242,10 +1403,12 @@ class RandomAffine(object):
 
         if shears is not None:
             if len(shears) == 2:
-                shear = [random.uniform(shears[0], shears[1]), 0.]
+                shear = [random.uniform(shears[0], shears[1]), 0.0]
             elif len(shears) == 4:
-                shear = [random.uniform(shears[0], shears[1]),
-                         random.uniform(shears[2], shears[3])]
+                shear = [
+                    random.uniform(shears[0], shears[1]),
+                    random.uniform(shears[2], shears[3]),
+                ]
         else:
             shear = 0.0
 
@@ -1259,28 +1422,33 @@ class RandomAffine(object):
         Returns:
             PIL Image: Rotated image(s).
         """
-        ret = self.get_params(self.degrees, self.translate, self.scale, self.shear, img.size)
+        ret = self.get_params(
+            self.degrees, self.translate, self.scale, self.shear, img.size
+        )
         if target is not None:
-            return F.affine(img, *ret, resample=self.resample, fillcolor=self.fillcolor), \
-                   F.affine(target, *ret, resample=self.resample_tg, fillcolor=self.fillcolor)
-                   # resample = False is by default nearest, appropriate for targets
+            return F.affine(
+                img, *ret, resample=self.resample, fillcolor=self.fillcolor
+            ), F.affine(
+                target, *ret, resample=self.resample_tg, fillcolor=self.fillcolor
+            )
+            # resample = False is by default nearest, appropriate for targets
         return F.affine(img, *ret, resample=self.resample, fillcolor=self.fillcolor)
 
     def __repr__(self):
-        s = '{name}(degrees={degrees}'
+        s = "{name}(degrees={degrees}"
         if self.translate is not None:
-            s += ', translate={translate}'
+            s += ", translate={translate}"
         if self.scale is not None:
-            s += ', scale={scale}'
+            s += ", scale={scale}"
         if self.shear is not None:
-            s += ', shear={shear}'
+            s += ", shear={shear}"
         if self.resample > 0:
-            s += ', resample={resample}'
+            s += ", resample={resample}"
         if self.fillcolor != 0:
-            s += ', fillcolor={fillcolor}'
-        s += ')'
+            s += ", fillcolor={fillcolor}"
+        s += ")"
         d = dict(self.__dict__)
-        d['resample'] = _pil_interpolation_to_str[d['resample']]
+        d["resample"] = _pil_interpolation_to_str[d["resample"]]
         return s.format(name=self.__class__.__name__, **d)
 
 
@@ -1300,7 +1468,7 @@ class Grayscale(object):
     def __init__(self, num_output_channels=1):
         self.num_output_channels = num_output_channels
 
-    def __call__(self, img, target = None):
+    def __call__(self, img, target=None):
         """
         Args:
             img (PIL Image): Image to be converted to grayscale.
@@ -1309,11 +1477,16 @@ class Grayscale(object):
             PIL Image: Randomly grayscaled image.
         """
         if target is not None:
-            return F.to_grayscale(img, num_output_channels=self.num_output_channels), target
+            return (
+                F.to_grayscale(img, num_output_channels=self.num_output_channels),
+                target,
+            )
         return F.to_grayscale(img, num_output_channels=self.num_output_channels)
 
     def __repr__(self):
-        return self.__class__.__name__ + '(num_output_channels={0})'.format(self.num_output_channels)
+        return self.__class__.__name__ + "(num_output_channels={0})".format(
+            self.num_output_channels
+        )
 
 
 class RandomGrayscale(object):
@@ -1333,7 +1506,7 @@ class RandomGrayscale(object):
     def __init__(self, p=0.1):
         self.p = p
 
-    def __call__(self, img, target = None):
+    def __call__(self, img, target=None):
         """
         Args:
             img (PIL Image): Image to be converted to grayscale.
@@ -1341,20 +1514,23 @@ class RandomGrayscale(object):
         Returns:
             PIL Image: Randomly grayscaled image.
         """
-        num_output_channels = 1 if img.mode == 'L' else 3
+        num_output_channels = 1 if img.mode == "L" else 3
         if random.random() < self.p:
             if target is not None:
-                return F.to_grayscale(img, num_output_channels=num_output_channels), target
+                return (
+                    F.to_grayscale(img, num_output_channels=num_output_channels),
+                    target,
+                )
         if target is not None:
             return img, target
         return img
 
     def __repr__(self):
-        return self.__class__.__name__ + '(p={0})'.format(self.p)
+        return self.__class__.__name__ + "(p={0})".format(self.p)
 
 
 class RandomErasing(object):
-    """ Randomly selects a rectangle region in an image and erases its pixels.
+    """Randomly selects a rectangle region in an image and erases its pixels.
         'Random Erasing Data Augmentation' by Zhong et al.
         See https://arxiv.org/pdf/1708.04896.pdf
     Args:
@@ -1378,14 +1554,18 @@ class RandomErasing(object):
         >>> ])
     """
 
-    def __init__(self, p=0.5, scale=(0.02, 0.33), ratio=(0.3, 3.3), value=0, inplace=False):
+    def __init__(
+        self, p=0.5, scale=(0.02, 0.33), ratio=(0.3, 3.3), value=0, inplace=False
+    ):
         assert isinstance(value, (numbers.Number, str, tuple, list))
         if (scale[0] > scale[1]) or (ratio[0] > ratio[1]):
             warnings.warn("range should be of kind (min, max)")
         if scale[0] < 0 or scale[1] > 1:
             raise ValueError("range of scale should be between 0 and 1")
         if p < 0 or p > 1:
-            raise ValueError("range of random erasing probability should be between 0 and 1")
+            raise ValueError(
+                "range of random erasing probability should be between 0 and 1"
+            )
 
         self.p = p
         self.scale = scale
@@ -1423,7 +1603,11 @@ class RandomErasing(object):
                 elif isinstance(value, torch._six.string_classes):
                     v = torch.empty([img_c, h, w], dtype=torch.float32).normal_()
                 elif isinstance(value, (list, tuple)):
-                    v = torch.tensor(value, dtype=torch.float32).view(-1, 1, 1).expand(-1, h, w)
+                    v = (
+                        torch.tensor(value, dtype=torch.float32)
+                        .view(-1, 1, 1)
+                        .expand(-1, h, w)
+                    )
                 return i, j, h, w, v
 
         # Return original image
@@ -1439,11 +1623,12 @@ class RandomErasing(object):
             target (Tensor): Target Tensor image.
         """
         if random.uniform(0, 1) < self.p:
-            x, y, h, w, v = self.get_params(img, scale=self.scale, ratio=self.ratio, value=self.value)
+            x, y, h, w, v = self.get_params(
+                img, scale=self.scale, ratio=self.ratio, value=self.value
+            )
             if target is not None:
                 return F.erase(img, x, y, h, w, v, self.inplace), target
             return F.erase(img, x, y, h, w, v, self.inplace)
         if target is not None:
             return img, target
         return img
-
