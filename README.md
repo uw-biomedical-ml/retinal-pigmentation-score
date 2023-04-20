@@ -6,7 +6,7 @@ Calculate the retinal pigmentation from a color fundus image using deep learning
 ## Credit
 A significant portion of this pipeline was built from code from Automorph. Thank you!
 
-https://github.com/rmaphoh/AutoMorph/blob/main/README.md
+![Automorph Github Repository]https://github.com/rmaphoh/AutoMorph/blob/main/README.md
 
 ```
 @article{zhou2022automorph,
@@ -21,17 +21,17 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
 }
 ```
 
-### Dataset Format
+## Dataset Format
 
 ### Input
   
-  All color fundus photos need to be in a single directory and in png format.
+All color fundus photos need to be in a single directory and in png format.
 
 ### Output
     
-  All results will be dumped into a folder that you specify: *ie* `/data/arajesh/rps/results`
-  
-  The results directory will have the subsequent structure
+All results will be dumped into a folder that you specify: *ie* `/data/arajesh/rps/results`
+
+The results directory will have the subsequent structure
 
     .
     |-- M0/ Pre-processing outputs
@@ -48,7 +48,7 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
     |-- RPS_representative_images.png **(representative figure giving context for what RPS scores are with regards to RGB colors)**
 
 
-# Setup instructions
+## Setup instructions
 
 
 1. Clone this code repository:
@@ -59,15 +59,15 @@ https://github.com/rmaphoh/AutoMorph/blob/main/README.md
 
 2a. Pull the docker container and start it.
 
-    The docker container is stored here: https://hub.docker.com/r/arajesh17/rps
+The docker container is stored here: ![Docker Hub]https://hub.docker.com/r/arajesh17/rps
 
-    Please pull the repo 
+Please pull the repo 
     
-      `docker pull arajesh17/rps`
+     `docker pull arajesh17/rps`
     
-    Now in your terminal after you finished the pull, you can start the container with an interactive shell
+Now in your terminal after you finished the pull, you can start the container with an interactive shell
     
-      `docker run -it -v <your images path:/home/images/> -v <your results path>:/home/results/ -v <your rps repo path>:/home/retinal-pigmentation-score/ --gpus all arajesh17/rps /bin/bash`
+     `docker run -it -v <your images path:/home/images/> -v <your results path>:/home/results/ -v <your rps repo path>:/home/retinal-pigmentation-score/ --gpus all arajesh17/rps /bin/bash`
 
 3a. Activate the python environment in the docker container
 
@@ -88,7 +88,7 @@ followed by
     'pip install -r requirements.txt'
 
 
-# Execution Instructions
+## Execution Instructions
 
 4. edit 'results_dir' and 'image_dir' in 'src/config.py' to reflect the output directory you want your files to go and the directory where your images should be stored
 
