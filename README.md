@@ -105,7 +105,7 @@ Run main.py() and also nvidia-smi in another window on the same machine to look 
 ## Credit
 A significant portion of this pipeline was built from code from Automorph. Thank you!
 
-Automorph Github Repository[(https://github.com/rmaphoh/AutoMorph/blob/main/README.md)]
+[Automorph Github Repository](https://github.com/rmaphoh/AutoMorph/blob/main/README.md)
 
 ```
 @article{zhou2022automorph,
