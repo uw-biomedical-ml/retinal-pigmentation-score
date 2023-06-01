@@ -1,5 +1,5 @@
-image_dir = "/data/anand/Automorph_data/test/images/"
-results_dir = "/data/anand/Automorph_data/test/results/"
+image_dir = "/home/images/" #edit to your own directory path
+results_dir = "/home/results/" #edit to your own directory batch
 
 worker = 0  # number of workers
 batch_size = 4
