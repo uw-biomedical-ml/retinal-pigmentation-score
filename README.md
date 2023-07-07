@@ -2,6 +2,8 @@
 
 This repository contains code that calculates the retinal pigmentation from a color fundus image using deep learning to segment the vasculature and nerve, then finds the median pixel value of retinal background in the Lab colorspace.
 
+Preprint is here: https://www.medrxiv.org/content/10.1101/2023.06.28.23291873v1
+
 ![Schematic Diagram](RPS_flow.png)
 
 
