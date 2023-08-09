@@ -105,7 +105,7 @@ Run main.py() and also nvidia-smi in another window on the same machine to look 
 
 ### Option 3 (Use Google Colab)
 
-Use the Free T4 provided in our [Google Colab Notebook](https://colab.research.google.com/drive/1gPBjG0jTHnennObZ2JnDC42A5po7Qlen?authuser=1#scrollTo=mz_pROw89CMR)
+Use the free T4 provided in our [Google Colab Notebook](https://colab.research.google.com/drive/1gPBjG0jTHnennObZ2JnDC42A5po7Qlen?usp=sharing)
 
 ## Credit
 A significant portion of this pipeline was built from code from Automorph. Thank you!
