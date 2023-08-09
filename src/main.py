@@ -23,15 +23,15 @@ logging.basicConfig(
 if __name__ == "__main__":
     #add argument parser to specify direct values to config
 
-     parser = argparse.ArgumentParser(description="A simple command-line tool.")
-     parser.add_argument("-i", "--image_dir", help="path to image directory", type=str)
-     parser.add_argument("-r", "--results_dir", type=str, help="path to results directory")
-     args = parser.parse_args()
+    parser = argparse.ArgumentParser(description="A simple command-line tool.")
+    parser.add_argument("-i", "--image_dir", help="path to image directory", type=str)
+    parser.add_argument("-r", "--results_dir", type=str, help="path to results directory")
+    args = parser.parse_args()
 
-     if args.image_dir:
-         config.image_dir = args.image_dir
-     if args.results_dir:
-         config.results_dir = args.results_dir
+    if args.image_dir:
+        config.image_dir = args.image_dir
+    if args.results_dir:
+        config.results_dir = args.results_dir
     
     print("\n--------------------\nRunning PreProcessing")
     # preprocessing
