@@ -148,6 +148,7 @@ def get_pigmentation(config):
             log.warning(
                 "{} was not processsed, cannot get rps, check logs".format(im_pth)
             )
+            continue
 
         vals = rgb2lab(np.array(im)[inv_mask])
         med = np.median(vals, axis=0)
