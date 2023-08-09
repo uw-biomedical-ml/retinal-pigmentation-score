@@ -146,7 +146,7 @@ def get_pigmentation(config):
             inv_mask = get_inverted_masks(masks, np.array(im))
         except IOError:
             log.warning(
-                "{} was not processsed, image size {}, masks size {}".format(im_pth, im.shape, [x.shape for x in masks])
+                "{} was not processsed, image size {}, masks size {}".format(im_pth, im.size, [x.sizee for x in masks])
             )
             continue
 
