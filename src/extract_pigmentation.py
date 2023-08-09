@@ -137,12 +137,12 @@ def get_pigmentation(config):
 
     for _, row in crop_csv.iterrows():
         im_pth = row.Name
-        f = im_pth.split("/")[-1]
+        f = im_pth.split("/")[-1].split('.')[0]
 
         try:
             im = Image.open(im_pth)
             im = crop_img(row.centre_w, row.centre_h, row.radius, im)
-            masks = get_masks(vp + f, dp + f)
+            masks = get_masks(vp + f + '.png', dp + f +'.png')
             inv_mask = get_inverted_masks(masks, np.array(im))
         except IOError:
             log.warning(
