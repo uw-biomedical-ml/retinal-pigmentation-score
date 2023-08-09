@@ -103,6 +103,9 @@ Figure out the optimal worker number and batch_size:
 
 Run main.py() and also nvidia-smi in another window on the same machine to look at GPU memory usage while executing the code. If you are not using all of your card's memory, increase the batch size until you are using nearly all of it. Batch size can be modified in the src/config.py file of this repository.
 
+### Option 3 (Use Google Colab)
+
+Use the Free T4 provided in our [Google Colab Notebook](https://colab.research.google.com/drive/1gPBjG0jTHnennObZ2JnDC42A5po7Qlen?authuser=1#scrollTo=mz_pROw89CMR)
 
 ## Credit
 A significant portion of this pipeline was built from code from Automorph. Thank you!
