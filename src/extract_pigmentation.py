@@ -11,6 +11,8 @@ import logging
 
 log = logging.getLogger("extract_pigmentation")
 
+def convert_to_png(fname):
+    return fname.replace('.jpg', '.png')
 
 def remove_dc_island(im):
     """removes the pixels that are not connected to the disc cup segmentations using flood fill"""
@@ -139,6 +141,9 @@ def get_pigmentation(config):
         im_pth = row.Name
         f = im_pth.split("/")[-1]
 
+        # convert to .png if ends in jpg
+        f = convert_to_png(f)
+
         try:
             im = Image.open(im_pth)
             im = crop_img(row.centre_w, row.centre_h, row.radius, im)
@@ -148,6 +153,8 @@ def get_pigmentation(config):
             log.warning(
                 "{} was not processsed, cannot get rps, check logs".format(im_pth)
             )
+            #TODO add extra debugging here regarding what actually caused the error
+            continue
 
         vals = rgb2lab(np.array(im)[inv_mask])
         med = np.median(vals, axis=0)
@@ -156,7 +163,7 @@ def get_pigmentation(config):
         data["a"].append(med[1])
         data["b"].append(med[2])
 
-        if config.debug == True:
+        if config.debug == True: #TODO this causes use memory usage if you run this on a loop of patients
             if not os.path.exists(config.results_dir + "debug/"):
                 os.makedirs(config.results_dir + "debug/")
 
