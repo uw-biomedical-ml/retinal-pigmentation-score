@@ -122,4 +122,5 @@ def EyeQ_process(cfg):
     if not os.path.exists("{}".format(save_path)):
         os.makedirs("{}".format(save_path))
 
+    log.info("Number of images to be processed:{}".format(len(image_list)))
     process(image_list, save_path, cfg)
