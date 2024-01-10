@@ -1,6 +1,7 @@
-image_dir = "/data/datasets/ODIR/RPS_analysis/normal_fundus/"
-results_dir = "/data/datasets/ODIR/RPS_analysis/rps_results/"
-
+<<<<<<< HEAD
+image_dir = "/home/images/" #edit to your own directory path
+results_dir = "/home/results/" #edit to your own directory batch
+>>>>>>> 48bd5af6076aab1ce184d8a086590b9a9b5a0fe0
 
 worker = 0  # number of workers
 batch_size = 4

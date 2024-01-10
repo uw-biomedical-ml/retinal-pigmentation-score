@@ -139,7 +139,7 @@ def get_pigmentation(config):
 
     for _, row in crop_csv.iterrows():
         im_pth = row.Name
-        f = im_pth.split("/")[-1]
+        f = im_pth.split("/")[-1].split('.')[0]
 
         # convert to .png if ends in jpg
         f = convert_to_png(f)
@@ -147,13 +147,15 @@ def get_pigmentation(config):
         try:
             im = Image.open(im_pth)
             im = crop_img(row.centre_w, row.centre_h, row.radius, im)
-            masks = get_masks(vp + f, dp + f)
+            masks = get_masks(vp + f + '.png', dp + f +'.png')
             inv_mask = get_inverted_masks(masks, np.array(im))
         except IOError:
             log.warning(
-                "{} was not processsed, cannot get rps, check logs".format(im_pth)
+                "{} was not processsed, image size {}, masks size {}".format(im_pth, im.size, [x.sizee for x in masks])
             )
+<<<<<<< HEAD
             #TODO add extra debugging here regarding what actually caused the error
+>>>>>>> 48bd5af6076aab1ce184d8a086590b9a9b5a0fe0
             continue
 
         vals = rgb2lab(np.array(im)[inv_mask])
