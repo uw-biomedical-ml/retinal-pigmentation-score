@@ -1,6 +1,6 @@
 image_dir = "/home/images/" #edit to your own directory path
 results_dir = "/home/results/" #edit to your own directory batch
-csv_path = False #edit to pass a csv with a column called 'Image ID' which has the path to all images
+csv_path = False #edit to pass a csv with a column called 'path' which has the path to all images
 worker = 0  # number of workers
 batch_size = 4 #batch size for the gpu
 device = "cuda"  # can specify cuda:[PCID] or 'cuda' or 'CPU'
