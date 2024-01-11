@@ -21,7 +21,7 @@ logging.basicConfig(
 
 
 if __name__ == "__main__":
-<<<<<<< HEAD
+
     #add argument parser to specify direct values to config
 
     parser = argparse.ArgumentParser(description="A simple command-line tool.")
@@ -34,7 +34,6 @@ if __name__ == "__main__":
     if args.results_dir:
         config.results_dir = args.results_dir
     
->>>>>>> 48bd5af6076aab1ce184d8a086590b9a9b5a0fe0
     print("\n--------------------\nRunning PreProcessing")
     # preprocessing
     M0_EQ.EyeQ_process(config)

@@ -1,14 +1,13 @@
-from genericpath import isfile
 from glob import glob
 import pandas as pd
 import os
 from PIL import ImageFile
-
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 from .fundus_prep import process_without_gb, imread, imwrite
 from random import sample
 from pathlib import Path
 import logging
+from .csv_tests import validate_csv
 
 log = logging.getLogger("pre-processing")
 
@@ -43,8 +42,10 @@ def process(image_list, save_path, cfg):
     resolution_list = pd.read_csv(resolution_csv_path)
 
     for image_path in image_list:
-        dst_image = cfg.image_dir + image_path
-        if os.path.exists("{}M0/images/".format(save_path) + image_path):
+        
+        fname = image_path.split('/')[-1]
+        # check to see if image already exists, therefore don't do this step
+        if os.path.exists("{}M0/images/".format(save_path) + image_path.split("/")[-1]):
             print("continue...")
             continue
         try:
@@ -63,9 +64,9 @@ def process(image_list, save_path, cfg):
                 ].values[0]
             list_resolution.append(resolution_)
 
-            img = imread(dst_image)
-            (
-                r_img,
+            img = imread(image_path)
+            
+            (   r_img,
                 borders,
                 mask,
                 label,
@@ -75,9 +76,9 @@ def process(image_list, save_path, cfg):
             ) = process_without_gb(img, img, radius_list, centre_list_w, centre_list_h)
 
             if not cfg.sparse:
-                imwrite(save_path + image_path.split(".")[0] + ".png", r_img)
+                imwrite(save_path + fname.split(".")[0] + ".png", r_img)
 
-            name_list.append(cfg.image_dir + image_path)
+            name_list.append(image_path)
 
         except IndexError:
             print(
@@ -102,7 +103,7 @@ def process(image_list, save_path, cfg):
             "centre_h": centre_list_h,
             "radius": radius_list,
             "Scale": scale_list,
-            "Scale_resolution": scale_resolution,
+            "Scale_resolution": scale_resolution
         }
     )
     Data4stage2.to_csv(
@@ -111,10 +112,15 @@ def process(image_list, save_path, cfg):
 
 
 def EyeQ_process(cfg):
-    if cfg.sample_num:
+
+    #If csv is set in the config file
+    if cfg.csv_path:
+        validate_csv(cfg.csv_path)
+        image_list = pd.read_csv(cfg.csv_path)["Image ID"].values
+    elif cfg.sample_num: # if you want a random sample of images from the image directory
         print("Sampling {} images from {}".format(cfg.sample_num, cfg.image_dir))
         image_list = sample(sorted(os.listdir(cfg.image_dir)), cfg.sample_num)
-    else:
+    else: # if you don't want random sample and all the images are in the same directory
         image_list = sorted(os.listdir(cfg.image_dir))
 
     save_path = cfg.results_dir + "M0/images/"

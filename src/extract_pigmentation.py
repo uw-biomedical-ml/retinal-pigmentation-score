@@ -153,9 +153,7 @@ def get_pigmentation(config):
             log.warning(
                 "{} was not processsed, image size {}, masks size {}".format(im_pth, im.size, [x.sizee for x in masks])
             )
-<<<<<<< HEAD
             #TODO add extra debugging here regarding what actually caused the error
->>>>>>> 48bd5af6076aab1ce184d8a086590b9a9b5a0fe0
             continue
 
         vals = rgb2lab(np.array(im)[inv_mask])
