@@ -12,7 +12,11 @@ Preprint is here: https://www.medrxiv.org/content/10.1101/2023.06.28.23291873v1
 
 ### Input
   
-All color fundus photos need to be in a single directory and in png format.
+All color fundus photos need to be in a single directory and in png format. 
+
+OR
+
+You can specify the path to a csv file in the config.py file under the 'csv_path' variable. The absolute paths of the filenames muse be listed under a column called 'Image ID'
 
 ### Output
     
