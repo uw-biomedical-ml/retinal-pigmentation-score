@@ -19,11 +19,11 @@ def validate_csv(filename):
     # Read and check for 'images' column
     try:
         df = pd.read_csv(filename)
-        if 'path' not in df.columns:
-            raise CSVValidationError("{0} does not contain 'path' column".format(filename))
-        if not os.path.isfile(df['path'][0]):
+        if 'Path' not in df.columns:
+            raise CSVValidationError("{0} does not contain 'Path' column".format(filename))
+        if not os.path.isfile(df['Path'][0]):
             raise CSVValidationError("first element {0} does not exist, check that filenames have the correct path in your input csv".format(
-                df['path'][0]
+                df['Path'][0]
             ))
     except Exception as e:
         raise CSVValidationError(f"Error reading CSV file: {e}")
