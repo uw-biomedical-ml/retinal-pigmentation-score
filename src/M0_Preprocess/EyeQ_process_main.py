@@ -116,7 +116,7 @@ def EyeQ_process(cfg):
     #If csv is set in the config file
     if cfg.csv_path:
         validate_csv(cfg.csv_path)
-        image_list = pd.read_csv(cfg.csv_path)["Image ID"].values
+        image_list = pd.read_csv(cfg.csv_path)["path"].values
     elif cfg.sample_num: # if you want a random sample of images from the image directory
         print("Sampling {} images from {}".format(cfg.sample_num, cfg.image_dir))
         image_list = sample(sorted(os.listdir(cfg.image_dir)), cfg.sample_num)
