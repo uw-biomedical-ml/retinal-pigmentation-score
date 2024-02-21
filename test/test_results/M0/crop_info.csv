@@ -1,0 +1,11 @@
+Name,centre_w,centre_h,radius,Scale,Scale_resolution
+/data/anand/retinal-pigmentation-score/test/test_images/1b3647865779.png,309,406,276,0.6052631578947368,605.2631578947369
+/data/anand/retinal-pigmentation-score/test/test_images/1b398c0494d1.png,526,527,523,1.1469298245614035,1146.9298245614034
+/data/anand/retinal-pigmentation-score/test/test_images/1b862fb6f65d.png,527,528,522,1.144736842105263,1144.7368421052631
+/data/anand/retinal-pigmentation-score/test/test_images/1b8701231c8f.png,296,410,296,0.6491228070175439,649.1228070175439
+/data/anand/retinal-pigmentation-score/test/test_images/1c13a1483f4a.png,527,528,523,1.1469298245614035,1146.9298245614034
+/data/anand/retinal-pigmentation-score/test/test_images/1c47815f4a6b.png,585,746,531,1.1644736842105263,1164.4736842105262
+/data/anand/retinal-pigmentation-score/test/test_images/1c7a013eeba7.png,533,533,517,1.1337719298245614,1133.7719298245615
+/data/anand/retinal-pigmentation-score/test/test_images/1c9c583c10bf.png,850,1239,850,1.8640350877192982,1864.0350877192982
+/data/anand/retinal-pigmentation-score/test/test_images/1ca35d483772.png,497,562,497,1.0899122807017543,1089.9122807017543
+/data/anand/retinal-pigmentation-score/test/test_images/1ca62b3e4fd3.png,1062,1320,896,1.9649122807017543,1964.9122807017543

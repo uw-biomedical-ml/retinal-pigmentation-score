@@ -1,0 +1,11 @@
+Name,softmax_good,softmax_usable,softmax_bad,good_sd,usable_sd,bad_sd,Prediction
+/data/anand/retinal-pigmentation-score/test/test_images/1b3647865779.png,0.9000217,0.09748872,0.0024895866,0.14077157,0.13650274,0.004347022,0
+/data/anand/retinal-pigmentation-score/test/test_images/1b398c0494d1.png,0.9265915,0.07160841,0.0018001018,0.04516724,0.043763686,0.0019531911,0
+/data/anand/retinal-pigmentation-score/test/test_images/1b862fb6f65d.png,0.9804026,0.019347006,0.00025045383,0.029249577,0.02897814,0.0003168394,0
+/data/anand/retinal-pigmentation-score/test/test_images/1b8701231c8f.png,0.02731035,0.6161817,0.356508,0.022827772,0.18452288,0.19172493,1
+/data/anand/retinal-pigmentation-score/test/test_images/1c13a1483f4a.png,0.96889186,0.029769171,0.0013389472,0.040801723,0.038534608,0.0024551472,0
+/data/anand/retinal-pigmentation-score/test/test_images/1c47815f4a6b.png,0.1462523,0.74900365,0.10474408,0.17524093,0.16986643,0.06364435,1
+/data/anand/retinal-pigmentation-score/test/test_images/1c7a013eeba7.png,0.8880564,0.10323492,0.00870866,0.12765993,0.11456605,0.015492455,0
+/data/anand/retinal-pigmentation-score/test/test_images/1c9c583c10bf.png,0.9142585,0.080911756,0.0048297164,0.08893414,0.082832165,0.0066569764,0
+/data/anand/retinal-pigmentation-score/test/test_images/1ca35d483772.png,0.87517893,0.113076985,0.011744048,0.091253445,0.08120792,0.010643221,0
+/data/anand/retinal-pigmentation-score/test/test_images/1ca62b3e4fd3.png,0.683841,0.2475878,0.06857128,0.21856539,0.16969776,0.08124746,0

@@ -119,9 +119,9 @@ def EyeQ_process(cfg):
         image_list = pd.read_csv(cfg.csv_path)["Path"].values
     elif cfg.sample_num: # if you want a random sample of images from the image directory
         print("Sampling {} images from {}".format(cfg.sample_num, cfg.image_dir))
-        image_list = sample(sorted(os.listdir(cfg.image_dir)), cfg.sample_num)
+        image_list = [cfg.image_dir + x for x in sample(sorted(os.listdir(cfg.image_dir)), cfg.sample_num)]
     else: # if you don't want random sample and all the images are in the same directory
-        image_list = sorted(os.listdir(cfg.image_dir))
+        image_list = [cfg.image_dir + x for x in sorted(os.listdir(cfg.image_dir))]
 
     save_path = cfg.results_dir + "M0/images/"
 
