@@ -148,6 +148,11 @@ class BasicDataset_OUT(Dataset):
         # Select sample
         img_file = self.file_paths[index]
         image = Image.open(img_file)
+        
+        # remove images that are not RGB
+        if image.mode != "RGB":
+            return None
+
         image_processed = self.preprocess(
             image, self.image_size, self.train_or, img_file, self.crop_csv
         )

@@ -36,7 +36,7 @@ if __name__ == "__main__":
     
     print("\n--------------------\nRunning PreProcessing")
     # preprocessing
-    M0_EQ.EyeQ_process(config)
+#    M0_EQ.EyeQ_process(config)
 
     # Eye Quality deep learning assesment
     print("\n--------------------\nRunning Image Quality Assesment")
