@@ -6,7 +6,23 @@ Preprint is here: https://www.medrxiv.org/content/10.1101/2023.06.28.23291873v1
 
 ![Schematic Diagram](RPS_flow.png)
 
+## Requirements
 
+Requirements are listed in requirements.txt file if you want to install your own environment, otherwise you can install a docker file via instructions below
+
+## Runtime
+
+For around 70000 images with an 8GB GPU and 128GB RAM computer, it takes around 6hrs to run the code.
+
+## Example dataset -APTOS2019
+
+An fully executed example of 10 randomly selected images without diabetic retinopathy from the APTOS2019 dataset are included for view
+
+The images are in test/test_images/
+
+The results are in test/test_results/
+
+It took around 30 seconds to run the code with an 8GB GPU and 128GB RAM computer
 
 ## Dataset Format
 
