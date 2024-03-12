@@ -18,6 +18,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from .dataset import BasicDataset_OUT
 from torch.utils.data import DataLoader
+from torch.utils.data._utils.collate import default_collate
 from .model import (
     Resnet101_fl,
     InceptionV3_fl,
@@ -69,6 +70,12 @@ def test_net(
         crop_csv=cfg.results_dir + "M0/crop_info.csv",
     )
 
+    def custom_collate(batch):
+        batch = [item for item in batch if item is not None]  # Filter out None values
+        if not batch:  # If the batch is empty after filtering, return None or raise an error
+            return None  # or raise some error
+        return default_collate(batch)
+
     n_test = len(dataset)
     val_loader = DataLoader(
         dataset,
@@ -77,6 +84,7 @@ def test_net(
         num_workers=cfg.worker,
         pin_memory=False,
         drop_last=False,
+        collate_fn=custom_collate
     )
 
     prediction_decode_list = []
@@ -312,7 +320,10 @@ def get_args():
 class M1_get_args:
     def __init__(self, cfg):
         self.epochs = 1
-        self.batchsize = cfg.batch_size
+        if cfg.batch_M1_quality:
+            self.batchsize = cfg.batch_M1_quality
+        else:
+            self.batchsize = cfg.batch_size
         self.load = "EyePACS_quality"
         self.test_dir = cfg.image_dir
         self.n_class = 3
@@ -327,6 +338,8 @@ class M1_get_args:
 def M1_image_quality(cfg):
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
     args = M1_get_args(cfg)
+
+    print(f'm1 bs {args.batchsize}')
 
     device = torch.device(cfg.device)
 

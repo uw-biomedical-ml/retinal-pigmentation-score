@@ -311,7 +311,12 @@ class M2_DC_args:
         self.csv_train = False
         self.seed = 30
         self.model_name = "wnet"
-        self.batch_size = cfg.batch_size
+
+        if cfg.batch_M2_disc:
+            self.batch_size = cfg.batch_M2_disc
+        else:
+            self.batch_size = cfg.batch_size
+
         self.grad_acc_steps: 0
         self.min_lr = 1e-08
         self.max_lr = 0.01
@@ -333,6 +338,8 @@ class M2_DC_args:
 def M2_disc_cup(cfg):
     args = M2_DC_args(cfg)
     results_path = args.results_path
+
+    print(f'm2 dc bs {args.batch_size}')
 
     device = torch.device(args.device)
     model_name = args.model_name

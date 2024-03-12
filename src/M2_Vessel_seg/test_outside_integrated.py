@@ -351,7 +351,10 @@ def test_net(
 class M2_VS_args:
     def __init__(self, cfg):
         self.epochs = 1
-        self.batchsize = cfg.batch_size
+        if cfg.batch_M2_vessel:
+            self.batchsize = cfg.batch_M2_vessel
+        else:
+            self.batchsize = cfg.batch_size
         self.lr = 2e-4
         self.load = False
         self.dis = "unet"
@@ -375,6 +378,8 @@ class M2_VS_args:
 def M2_vessel_seg(cfg):
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
     args = M2_VS_args(cfg)
+
+    print(f'm2 bs {args.batchsize}')
 
     device = torch.device(cfg.device)
     logging.info(f"Using device {device}")

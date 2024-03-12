@@ -147,10 +147,16 @@ class BasicDataset_OUT(Dataset):
         "Generates one sample of data"
         # Select sample
         img_file = self.file_paths[index]
-        image = Image.open(img_file)
+
+        try:
+            image = Image.open(img_file)
+        except IOError:
+            logging.warning(f"Error opening image, skipping: {img_file}")
+            return None
         
         # remove images that are not RGB
         if image.mode != "RGB":
+            logging.warning(f"Image not in RGB mode, skipping: {img_file}")
             return None
 
         image_processed = self.preprocess(
