@@ -14,6 +14,11 @@ Requirements are listed in requirements.txt file if you want to install your own
 
 For around 70000 images with an 8GB GPU and 128GB RAM computer, it takes around 6hrs to run the code.
 
+You may change the batch size to improve the inference speed at src/config.py. Here are some rough estimates with batch size and the amount of GPU memory used.
+  M1_quality: batch size of 20 used about 5GB
+  M2_vessel: batch size of 7 used about 8GB
+  M2_disc: batch size of 20 used about 3.4GB
+
 ## Example dataset -APTOS2019
 
 An fully executed example of 10 randomly selected images without diabetic retinopathy from the APTOS2019 dataset are included for view
