@@ -16,11 +16,11 @@ For around 70000 images with an 8GB GPU and 128GB RAM computer, it takes around 
 
 You may change the batch size to improve the inference speed at src/config.py. Here are some rough estimates with batch size and the amount of GPU memory used.
 
-  M1_quality: batch size of 20 used about 5GB
+    M1_quality: batch size of 20 used about 5GB
 
-  M2_vessel: batch size of 7 used about 8GB
+    M2_vessel: batch size of 7 used about 8GB
   
-  M2_disc: batch size of 20 used about 3.4GB
+    M2_disc: batch size of 20 used about 3.4GB
 
 ## Example dataset -APTOS2019
 
